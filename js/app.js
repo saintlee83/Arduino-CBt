@@ -7,6 +7,7 @@
 const QUESTIONS = (window.QUESTIONS || []).slice();
 const NOTES = (window.NOTES || []).slice().sort((a, b) => a.section - b.section);
 const FLASHCARDS = (window.FLASHCARDS || []).slice();
+const CHEAT = (window.CHEATSHEET || []).slice();
 
 const TOPICS = {
   pin:{l:"핀 선언", c:"#8b9bff"}, pwm:{l:"PWM", c:"#5b8cff"}, digin:{l:"풀업/풀다운", c:"#22d3ee"},
@@ -79,7 +80,7 @@ function refreshBadges() {
 }
 
 /* ---------------- router ---------------- */
-const ROUTES = { home: viewHome, study: viewStudy, exam: viewExam, wrong: viewWrong, flash: viewFlash, sevenseg: viewSeg, stats: viewStats };
+const ROUTES = { home: viewHome, study: viewStudy, cheat: viewCheat, exam: viewExam, wrong: viewWrong, flash: viewFlash, sevenseg: viewSeg, stats: viewStats };
 let examState = null;
 
 function parseHash() {
@@ -154,6 +155,7 @@ function viewHome() {
       <div class="tile" data-go="wrong"><div class="tile-ico" style="background:color-mix(in srgb,var(--bad) 16%,transparent);color:var(--bad)"><svg viewBox="0 0 24 24"><path d="M12 3 2 21h20Z"/><path d="M12 10v5M12 18h.01"/></svg></div><h3>오답노트 ${wrong ? `(${wrong})` : ""}</h3><p>틀린 문제만 다시 풀어 약점 제거</p></div>
       <div class="tile" data-go="flash"><div class="tile-ico" style="background:color-mix(in srgb,var(--cyan) 16%,transparent);color:var(--cyan)"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18"/></svg></div><h3>플래시카드 ${fcDue ? `(${fcDue} 복습)` : ""}</h3><p>간격 반복(Leitner)으로 암기 굳히기</p></div>
       <div class="tile" data-go="sevenseg"><div class="tile-ico" style="background:color-mix(in srgb,var(--star) 16%,transparent);color:var(--star)"><svg viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="18" rx="2"/><path d="M9 7h6M9 12h6M9 17h6"/></svg></div><h3>7세그 시뮬 ⭐</h3><p>F·2·A 패턴 직접 만들어 보기 (출제 예고!)</p></div>
+      <div class="tile" data-go="cheat"><div class="tile-ico" style="background:color-mix(in srgb,var(--accent2) 16%,transparent);color:var(--accent2)"><svg viewBox="0 0 24 24"><path d="M14 3v5h5"/><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M8 13h8M8 17h5"/></svg></div><h3>핵심 치트시트</h3><p>시험 직전 30초 컷 · 인쇄/PDF 저장</p></div>
     </div>
 
     <div class="dash-row">
@@ -252,6 +254,26 @@ function viewStudy() {
     es.forEach(en => { if (en.isIntersecting) { $$(".toc a").forEach(x => x.classList.remove("cur")); const t = $(`.toc a[data-sec="${en.target.id.replace("sec-", "")}"]`); t && t.classList.add("cur"); } });
   }, { rootMargin: "-20% 0px -70% 0px" });
   $$(".note-sec").forEach(s => io.observe(s));
+}
+
+/* =========================================================
+   CHEAT SHEET (printable)
+   ========================================================= */
+function viewCheat() {
+  const cards = CHEAT.map(c => `
+    <div class="cheat-card" style="--cc:${topicColor(c.k)}">
+      <h3><span class="cdot"></span>${esc(c.t)}</h3>
+      <ul>${(c.items || []).map(it => `<li>${md(it)}</li>`).join("")}</ul>
+    </div>`).join("");
+  view.innerHTML = `<div class="wrap cheat-wrap">
+    <div class="page-head cheat-head">
+      <div><span class="kicker">시험 직전 30초 컷</span><h1>핵심 치트시트</h1>
+        <p>강의 슬라이드 + 복습강의 + Notion 총정리에서 시험에 나올 숫자·함정만 추렸습니다. <b style="color:var(--star)">⭐ = 출제 예고</b></p></div>
+      <button class="btn ghost sm" id="printBtn" title="인쇄하거나 PDF로 저장">🖨️ 인쇄 / PDF</button>
+    </div>
+    <div class="cheat-grid">${cards || '<p class="muted">치트시트 데이터를 불러오는 중…</p>'}</div>
+  </div>`;
+  const pb = $("#printBtn"); if (pb) pb.addEventListener("click", () => { if (window.print) window.print(); });
 }
 
 /* =========================================================

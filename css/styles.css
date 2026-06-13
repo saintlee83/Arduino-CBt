@@ -342,6 +342,30 @@ code.inl{font-family:var(--mono);font-size:.9em;background:var(--surf3);padding:
 .challenge-status.no{background:color-mix(in srgb,var(--warn) 14%,transparent);color:var(--warn)}
 .anode-row{display:flex;gap:8px;margin:4px 0 2px}
 
+/* ---------- cheat sheet ---------- */
+.cheat-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
+.cheat-grid{columns:3 280px;column-gap:14px}
+.cheat-card{break-inside:avoid;-webkit-column-break-inside:avoid;margin:0 0 14px;padding:14px 16px;border:1px solid var(--line);border-left:3px solid var(--cc,var(--accent));border-radius:14px;background:var(--surf);box-shadow:var(--shadow)}
+.cheat-card h3{margin:0 0 9px;font-size:14.5px;font-weight:800;display:flex;align-items:center;gap:8px;letter-spacing:-.01em}
+.cheat-card .cdot{width:9px;height:9px;border-radius:50%;background:var(--cc,var(--accent));flex:0 0 9px}
+.cheat-card ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px}
+.cheat-card li{font-size:12.5px;line-height:1.55;color:var(--tx);padding-left:12px;position:relative}
+.cheat-card li::before{content:"";position:absolute;left:0;top:8px;width:4px;height:4px;border-radius:50%;background:var(--cc,var(--accent));opacity:.65}
+.cheat-card code.inl{font-size:.86em;padding:0 4px}
+
+@media print{
+  @page{margin:10mm}
+  body{background:#fff!important}
+  .topbar,.sidebar,.botnav,.scrim,#printBtn,.cheat-head .kicker,.cheat-head p{display:none!important}
+  .layout{display:block}.main{padding:0;animation:none}
+  .cheat-head{margin-bottom:8px}.cheat-head h1{font-size:18px;margin:0;color:#000}
+  .cheat-grid{columns:2 230px;column-gap:9px}
+  .cheat-card{background:#fff;box-shadow:none;border:1px solid #bbb;margin-bottom:8px;padding:9px 11px}
+  .cheat-card h3{font-size:12px;color:#000}.cheat-card li{font-size:10px;color:#111;line-height:1.4}
+  .cheat-card code.inl{background:#eee;color:#000}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+
 /* ---------- stats ---------- */
 .stat-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:14px;margin-bottom:20px}
 .stat-card{padding:18px 20px;border-radius:var(--r-lg);background:var(--surf);border:1px solid var(--line)}
