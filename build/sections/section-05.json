@@ -1,0 +1,231 @@
+{
+  "section": 5,
+  "title": "RGB LED",
+  "pages": "p.11",
+  "topic": "rgb",
+  "notesBlocks": [
+    {
+      "type": "subheading",
+      "text": "RGB LED 기본 구조"
+    },
+    {
+      "type": "list",
+      "ordered": false,
+      "items": [
+        {
+          "text": "LED 셀 3개(R, G, B)가 한 패키지에 들어 있고, 다리(핀)는 4개다 (색 3개 + 공통 1개).",
+          "badge": null
+        },
+        {
+          "text": "공통 양극(common anode)형이 대부분이다 — 공통 핀을 VCC(5V)에 연결하고, 나머지 3핀으로 각 색을 제어한다.",
+          "badge": "mic"
+        },
+        {
+          "text": "각 색마다 전류 제한 저항을 1개씩, 총 3개를 직렬로 연결한다.",
+          "badge": null
+        }
+      ]
+    },
+    {
+      "type": "subheading",
+      "text": "색 혼합과 PWM 제어"
+    },
+    {
+      "type": "list",
+      "ordered": false,
+      "items": [
+        {
+          "text": "PWM으로 각 색의 밝기를 조절해 혼합하여 원하는 색을 생성한다.",
+          "badge": null
+        },
+        {
+          "text": "3색을 모두 켜면 흰색이 된다.",
+          "badge": "mic"
+        }
+      ]
+    },
+    {
+      "type": "subheading",
+      "text": "공통 양극형 vs 공통 음극형 동작 차이"
+    },
+    {
+      "type": "callout",
+      "variant": "warn",
+      "text": "공통 양극형은 음극 핀을 제어하므로 동작이 반대다: 0% 듀티 → 가장 밝게 켜짐 / 100% 듀티 → 완전히 꺼짐."
+    },
+    {
+      "type": "table",
+      "headers": ["유형", "공통 핀 연결", "제어 방식", "듀티에 따른 동작"],
+      "rows": [
+        ["공통 양극(common anode)", "VCC(5V)", "음극 핀 제어 (반대)", "0% 듀티 = 가장 밝게, 100% 듀티 = 꺼짐"],
+        ["공통 음극(common cathode)", "GND", "제어가 반대 (값 그대로)", "값 그대로 = 직관적"]
+      ]
+    },
+    {
+      "type": "para",
+      "text": "공통 음극(common cathode)형은 공통 양극형과 제어가 반대로, 값 그대로가 밝기가 되어 직관적이다."
+    },
+    {
+      "type": "subheading",
+      "text": "3색 LED와의 구분"
+    },
+    {
+      "type": "callout",
+      "variant": "mic",
+      "text": "셀이 2개 들어간 것은 \"3색 LED\"라고 부른다 — 두 색 + 동시 점등 혼합색으로 3색을 내지만, RGB처럼 모든 색을 자유롭게 만들 수는 없다."
+    },
+    {
+      "type": "para",
+      "text": "강의 슬라이드 p.11 — 공통 양극 RGB LED 회로 (색상별 전류 제한 저항 3개)."
+    }
+  ],
+  "questions": [
+    {
+      "id": "s5-q01",
+      "section": 5,
+      "topic": "rgb",
+      "type": "mc",
+      "difficulty": 1,
+      "starred": false,
+      "question": "RGB LED 패키지의 구성에 대한 설명으로 옳은 것은?",
+      "choices": [
+        "LED 셀 3개(R, G, B)가 한 패키지에 있고 다리는 4개(색 3 + 공통 1)다",
+        "LED 셀 3개에 다리가 6개(색마다 2개씩)다",
+        "LED 셀 1개로 색을 바꿔가며 표시한다",
+        "LED 셀 4개(R, G, B, W)가 들어 있다",
+        "LED 셀 3개에 다리가 3개뿐이다"
+      ],
+      "answerIndex": 0,
+      "explanation": "RGB LED는 R, G, B 세 개의 LED 셀이 한 패키지에 들어 있고, 색 3개 제어선 + 공통 1개로 총 4개의 다리를 가진다. 셀마다 핀을 따로 두면 6핀이지만 공통 핀 1개를 공유하기 때문에 4핀이 된다.",
+      "source": "§5 p.11"
+    },
+    {
+      "id": "s5-q02",
+      "section": 5,
+      "topic": "rgb",
+      "type": "ox",
+      "difficulty": 1,
+      "starred": true,
+      "question": "RGB LED는 공통 양극(common anode)형이 대부분이며, 이때 공통 핀을 VCC(5V)에 연결한다.",
+      "choices": ["O (맞다)", "X (틀리다)"],
+      "answerIndex": 0,
+      "explanation": "교수님이 구두로 강조한 내용으로, 공통 양극형이 대부분이며 공통 핀을 VCC(5V)에 연결하고 나머지 3핀으로 각 색을 제어한다. 따라서 맞는 설명이다.",
+      "source": "§5 p.11"
+    },
+    {
+      "id": "s5-q03",
+      "section": 5,
+      "topic": "rgb",
+      "type": "mc",
+      "difficulty": 2,
+      "starred": true,
+      "question": "공통 양극(common anode) RGB LED에서 한 색에 analogWrite로 0% 듀티(값 0)를 주면 어떻게 되는가?",
+      "choices": [
+        "가장 밝게 켜진다",
+        "완전히 꺼진다",
+        "절반 밝기로 켜진다",
+        "깜빡인다",
+        "흰색으로 켜진다"
+      ],
+      "answerIndex": 0,
+      "explanation": "공통 양극형은 음극 핀을 제어하므로 동작이 반대다. 0% 듀티에서는 음극 쪽 전위가 가장 낮게 유지되어 전류가 최대로 흘러 가장 밝게 켜진다. 반대로 100% 듀티면 완전히 꺼진다.",
+      "source": "§5 p.11"
+    },
+    {
+      "id": "s5-q04",
+      "section": 5,
+      "topic": "rgb",
+      "type": "mc",
+      "difficulty": 2,
+      "starred": true,
+      "question": "공통 양극(common anode) RGB LED에서 어떤 색을 완전히 끄려면 그 색 핀의 PWM 듀티를 얼마로 주어야 하는가?",
+      "choices": [
+        "100% 듀티",
+        "0% 듀티",
+        "50% 듀티",
+        "25% 듀티",
+        "75% 듀티"
+      ],
+      "answerIndex": 0,
+      "explanation": "공통 양극형은 음극 핀을 제어하므로 동작이 반대다. 100% 듀티 → 완전히 꺼짐, 0% 듀티 → 가장 밝게 켜짐이다. 따라서 색을 끄려면 100% 듀티를 주어야 한다.",
+      "source": "§5 p.11"
+    },
+    {
+      "id": "s5-q05",
+      "section": 5,
+      "topic": "rgb",
+      "type": "ox",
+      "difficulty": 1,
+      "starred": true,
+      "question": "RGB LED의 3색(R, G, B)을 모두 켜면 흰색이 만들어진다.",
+      "choices": ["O (맞다)", "X (틀리다)"],
+      "answerIndex": 0,
+      "explanation": "교수님이 구두로 강조한 내용으로, PWM으로 각 색을 혼합하며 3색을 모두 켜면 흰색이 된다. 빛의 가산 혼합(RGB) 원리에 따른 결과로 맞는 설명이다.",
+      "source": "§5 p.11"
+    },
+    {
+      "id": "s5-q06",
+      "section": 5,
+      "topic": "rgb",
+      "type": "mc",
+      "difficulty": 1,
+      "starred": false,
+      "question": "RGB LED 회로에서 전류 제한 저항은 몇 개를 어떻게 연결하는가?",
+      "choices": [
+        "각 색마다 1개씩 총 3개를 직렬 연결",
+        "공통 핀에 1개만 직렬 연결",
+        "각 색마다 1개씩 총 3개를 병렬 연결",
+        "저항 없이 LED만 직접 연결",
+        "총 4개(색 3 + 공통 1)를 직렬 연결"
+      ],
+      "answerIndex": 0,
+      "explanation": "원문에 따르면 각 색마다 전류 제한 저항을 1개씩, 총 3개를 직렬로 연결한다. 슬라이드 p.11 회로도에도 색상별 전류 제한 저항 3개가 그려져 있다.",
+      "source": "§5 p.11"
+    },
+    {
+      "id": "s5-q07",
+      "section": 5,
+      "topic": "rgb",
+      "type": "mc",
+      "difficulty": 2,
+      "starred": false,
+      "question": "공통 음극(common cathode) RGB LED의 제어 특성으로 옳은 것은?",
+      "choices": [
+        "PWM 값이 그대로 밝기가 되어 직관적이다",
+        "PWM 값이 클수록 어두워진다",
+        "공통 핀을 VCC(5V)에 연결한다",
+        "0% 듀티에서 가장 밝게 켜진다",
+        "PWM 제어가 불가능하다"
+      ],
+      "answerIndex": 0,
+      "explanation": "공통 음극형은 공통 양극형과 제어가 반대다. 즉 PWM 값 그대로가 밝기가 되어 직관적이다(값이 클수록 밝아짐). 공통 핀을 VCC에 연결해 0% 듀티에서 가장 밝게 켜지는 것은 공통 양극형의 특성이다.",
+      "source": "§5 p.11"
+    },
+    {
+      "id": "s5-q08",
+      "section": 5,
+      "topic": "rgb",
+      "type": "ox",
+      "difficulty": 2,
+      "starred": false,
+      "question": "셀이 2개 들어간 \"3색 LED\"는 RGB LED처럼 모든 색을 자유롭게 만들 수 있다.",
+      "choices": ["O (맞다)", "X (틀리다)"],
+      "answerIndex": 1,
+      "explanation": "교수님 구두 강조 내용에 따르면, 셀이 2개 들어간 \"3색 LED\"는 두 색 + 동시 점등 혼합색으로 3색을 내지만, RGB처럼 모든 색을 자유롭게 만들 수는 없다. 따라서 틀린 설명이다.",
+      "source": "§5 p.11"
+    },
+    {
+      "id": "s5-q09",
+      "section": 5,
+      "topic": "rgb",
+      "type": "short",
+      "difficulty": 2,
+      "starred": true,
+      "question": "공통 양극 RGB LED에서 동작이 PWM 듀티와 \"반대\"로 나타나는 까닭은 무엇 때문인가? (제어 대상 핀을 기준으로)",
+      "answerText": "음극(캐소드) 핀을 제어하기 때문",
+      "acceptable": ["음극 핀 제어", "캐소드 제어", "음극을 제어", "음극", "캐소드", "cathode"],
+      "explanation": "공통 양극형은 공통(양극)을 VCC에 고정하고 각 색의 음극 핀을 제어한다. 음극 쪽을 LOW로 만들수록(듀티가 낮을수록) 전류가 많이 흘러 밝아지므로 0% 듀티에서 가장 밝고 100% 듀티에서 꺼지는, 듀티와 반대인 동작이 나타난다.",
+      "source": "§5 p.11"
+    }
+  ]
+}

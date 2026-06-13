@@ -1,0 +1,355 @@
+{
+  "section": 7,
+  "title": "아날로그 입력 — 가변저항과 센서/전압분배",
+  "pages": "p.15~16",
+  "topic": "sensor",
+  "notesBlocks": [
+    {
+      "type": "subheading",
+      "text": "가변저항 (포텐쇼미터, pot)"
+    },
+    {
+      "type": "list",
+      "ordered": false,
+      "items": [
+        {
+          "text": "3핀: 바깥 2핀에 VCC·GND, 가운데 핀(와이퍼)에서 분배된 전압 출력",
+          "badge": null
+        },
+        {
+          "text": "양 끝 사이의 전체 저항은 불변, 와이퍼가 움직이면 R1:R2의 비율이 바뀌어 출력 전압이 변한다",
+          "badge": "mic"
+        }
+      ]
+    },
+    {
+      "type": "callout",
+      "variant": "mic",
+      "text": "종류와 응용 (슬라이드에 없음 — 교수님 구두 강조)"
+    },
+    {
+      "type": "table",
+      "headers": ["종류", "특징 / 응용"],
+      "rows": [
+        ["카본형", "일반적, 오래 쓰면 접촉 불량 가능"],
+        ["권선형(코일 감김)", "내구성 좋음 → 각도/위치 감지 센서로 사용 (예: 재활 운동기기의 다리 관절 각도 측정, 톱니바퀴를 달아 위치 추적)"],
+        ["슬라이드 볼륨", "직선 위치 검출"],
+        ["반고정(트리머)", "한 번 설정 후 고정하는 기준값 조정용"]
+      ]
+    },
+    {
+      "type": "subheading",
+      "text": "전압 분배 회로 (p.16) — 공식 암기"
+    },
+    {
+      "type": "callout",
+      "variant": "star",
+      "text": "Vout = Vin × R2 / (R1 + R2)"
+    },
+    {
+      "type": "para",
+      "text": "회로: +5V — R1 — (중간 노드 → A0) — R2 — GND"
+    },
+    {
+      "type": "para",
+      "text": "강의 슬라이드 p.16 — 전압 분배 회로와 CdS 포토 레지스터"
+    },
+    {
+      "type": "subheading",
+      "text": "포토 레지스터 (CdS, 광센서)"
+    },
+    {
+      "type": "list",
+      "ordered": false,
+      "items": [
+        {
+          "text": "빛이 밝아지면 저항 감소: 완전히 어두울 때 약 200kΩ ↔ 빛이 가득할 때 약 5kΩ",
+          "badge": null
+        }
+      ]
+    },
+    {
+      "type": "callout",
+      "variant": "mic",
+      "text": "전압분배에서 어느 위치에 다느냐에 따라 출력 방향이 반대"
+    },
+    {
+      "type": "list",
+      "ordered": false,
+      "items": [
+        {
+          "text": "CdS를 R1(위) 자리에 → 밝아지면 출력 전압 상승",
+          "badge": "mic"
+        },
+        {
+          "text": "CdS를 R2(아래) 자리에 → 밝아지면 출력 전압 하강",
+          "badge": "mic"
+        }
+      ]
+    },
+    {
+      "type": "subheading",
+      "text": "NTC 서미스터"
+    },
+    {
+      "type": "callout",
+      "variant": "mic",
+      "text": "NTC 서미스터 (슬라이드에 없음 — 말로만 강조)"
+    },
+    {
+      "type": "list",
+      "ordered": false,
+      "items": [
+        {
+          "text": "온도가 올라가면 저항이 내려간다 (NTC = Negative Temperature Coefficient)",
+          "badge": "mic"
+        },
+        {
+          "text": "온도 제어 응용에 사용 (작년 '의용센서' 과목에서 배운 내용 재언급)",
+          "badge": "mic"
+        }
+      ]
+    }
+  ],
+  "questions": [
+    {
+      "id": "s7-q01",
+      "section": 7,
+      "topic": "sensor",
+      "type": "mc",
+      "difficulty": 1,
+      "starred": false,
+      "question": "가변저항(포텐쇼미터)의 가운데 핀(와이퍼)에서 나오는 것은 무엇인가?",
+      "choices": [
+        "분배된 출력 전압",
+        "전체 저항값",
+        "VCC 전원",
+        "GND 기준 전류"
+      ],
+      "answerIndex": 0,
+      "explanation": "가변저항은 3핀 구조로 바깥 2핀에 VCC·GND를 연결하고, 가운데 핀(와이퍼)에서 R1:R2 비율에 따라 분배된 전압을 출력한다. 바깥 두 핀은 전원, 가운데 핀만 출력이다.",
+      "source": "§7 p.15~16"
+    },
+    {
+      "id": "s7-q02",
+      "section": 7,
+      "topic": "sensor",
+      "type": "mc",
+      "difficulty": 2,
+      "starred": false,
+      "question": "가변저항의 와이퍼를 움직일 때 일어나는 일을 가장 정확하게 설명한 것은?",
+      "choices": [
+        "양 끝 사이의 전체 저항은 불변이고, R1:R2 비율이 바뀌어 출력 전압이 변한다",
+        "양 끝 사이의 전체 저항이 줄어들면서 출력 전압이 변한다",
+        "전체 저항과 출력 전압이 모두 일정하게 유지된다",
+        "VCC 자체가 변하면서 출력 전압이 변한다"
+      ],
+      "answerIndex": 0,
+      "explanation": "교수님 강조(🎤): 양 끝 사이의 전체 저항은 불변이다. 와이퍼가 움직이면 R1과 R2로 나뉘는 비율(R1:R2)이 바뀌어 가운데 핀의 출력 전압이 변한다. 전체 저항이나 VCC가 변하는 것이 아니다.",
+      "source": "§7 p.15~16"
+    },
+    {
+      "id": "s7-q03",
+      "section": 7,
+      "topic": "sensor",
+      "type": "short",
+      "difficulty": 2,
+      "starred": true,
+      "question": "전압 분배 회로에서 출력 전압 Vout을 Vin, R1, R2로 나타내는 공식을 쓰시오.",
+      "answerText": "Vout = Vin × R2 / (R1 + R2)",
+      "acceptable": [
+        "Vout = Vin × R2 / (R1 + R2)",
+        "Vout = Vin * R2 / (R1 + R2)",
+        "Vout = Vin·R2/(R1+R2)",
+        "Vout=Vin×R2/(R1+R2)",
+        "Vin × R2 / (R1 + R2)"
+      ],
+      "explanation": "전압 분배 공식 Vout = Vin × R2 / (R1 + R2)는 반드시 암기해야 하는 핵심 공식이다(p.16). 회로는 +5V — R1 — (중간 노드 → A0) — R2 — GND 구조로, 출력은 GND 쪽 저항 R2가 분담하는 전압이다.",
+      "source": "§7 p.15~16"
+    },
+    {
+      "id": "s7-q04",
+      "section": 7,
+      "topic": "sensor",
+      "type": "mc",
+      "difficulty": 3,
+      "starred": false,
+      "question": "전압 분배 회로(+5V — R1 — A0 — R2 — GND)에서 Vin=5V, R1=2kΩ, R2=3kΩ일 때 A0 노드의 출력 전압 Vout은 약 얼마인가?",
+      "choices": [
+        "3V",
+        "2V",
+        "2.5V",
+        "1.67V"
+      ],
+      "answerIndex": 0,
+      "explanation": "Vout = Vin × R2/(R1+R2) = 5 × 3/(2+3) = 5 × 3/5 = 3V. 출력은 GND 쪽 저항 R2의 비율이 결정한다. R1 쪽 비율로 계산하면 2V가 나오는데 이는 함정 오답이다.",
+      "source": "§7 p.15~16"
+    },
+    {
+      "id": "s7-q05",
+      "section": 7,
+      "topic": "sensor",
+      "type": "ox",
+      "difficulty": 1,
+      "starred": false,
+      "question": "CdS 포토 레지스터는 빛이 밝아질수록 저항이 증가한다.",
+      "choices": ["O (맞다)", "X (틀리다)"],
+      "answerIndex": 1,
+      "explanation": "틀리다. CdS 광센서는 빛이 밝아지면 저항이 감소한다. 완전히 어두울 때 약 200kΩ, 빛이 가득할 때 약 5kΩ로 떨어진다. 밝아질수록 저항이 줄어든다.",
+      "source": "§7 p.15~16"
+    },
+    {
+      "id": "s7-q06",
+      "section": 7,
+      "topic": "sensor",
+      "type": "mc",
+      "difficulty": 1,
+      "starred": false,
+      "question": "CdS 포토 레지스터의 저항 범위로 옳은 것은?",
+      "choices": [
+        "어두울 때 약 200kΩ, 밝을 때 약 5kΩ",
+        "어두울 때 약 5kΩ, 밝을 때 약 200kΩ",
+        "어두울 때 약 20kΩ, 밝을 때 약 0.5kΩ",
+        "어두울 때 약 1MΩ, 밝을 때 약 50kΩ"
+      ],
+      "answerIndex": 0,
+      "explanation": "CdS는 완전히 어두울 때 약 200kΩ, 빛이 가득할 때 약 5kΩ이다. 밝아질수록 저항이 감소하므로 어두울 때가 더 큰 저항값(200kΩ)을 가진다. 값을 뒤집은 선택지(5kΩ↔200kΩ)는 흔한 오답이다.",
+      "source": "§7 p.15~16"
+    },
+    {
+      "id": "s7-q07",
+      "section": 7,
+      "topic": "sensor",
+      "type": "mc",
+      "difficulty": 3,
+      "starred": true,
+      "question": "전압 분배 회로(+5V — R1 — A0 — R2 — GND)에서 CdS를 R1(위) 자리에 달았다. 주변이 밝아지면 A0의 출력 전압은 어떻게 변하는가?",
+      "choices": [
+        "상승한다",
+        "하강한다",
+        "변하지 않는다",
+        "처음엔 하강했다가 다시 상승한다"
+      ],
+      "answerIndex": 0,
+      "explanation": "교수님 강조(🎤): CdS를 R1(위) 자리에 달면 밝아질 때 CdS 저항이 감소 → R1 감소 → Vout = Vin×R2/(R1+R2)에서 분모가 작아져 출력 전압이 상승한다. 반대로 R2(아래) 자리에 달면 밝아질 때 출력이 하강한다. 위치에 따라 출력 방향이 반대다.",
+      "source": "§7 p.15~16"
+    },
+    {
+      "id": "s7-q08",
+      "section": 7,
+      "topic": "sensor",
+      "type": "ox",
+      "difficulty": 2,
+      "starred": true,
+      "question": "전압 분배 회로에서 CdS를 R2(아래) 자리에 달면, 빛이 밝아질 때 출력 전압이 하강한다.",
+      "choices": ["O (맞다)", "X (틀리다)"],
+      "answerIndex": 0,
+      "explanation": "맞다(🎤). CdS를 R2 자리에 달면 밝아질 때 R2 저항이 감소 → Vout = Vin×R2/(R1+R2)에서 분자 R2가 작아져 출력 전압이 하강한다. R1 자리에 달면 반대로 상승한다. 다는 위치에 따라 출력 방향이 반대가 된다.",
+      "source": "§7 p.15~16"
+    },
+    {
+      "id": "s7-q09",
+      "section": 7,
+      "topic": "sensor",
+      "type": "mc",
+      "difficulty": 2,
+      "starred": false,
+      "question": "다음 중 NTC 서미스터의 특성을 옳게 설명한 것은?",
+      "choices": [
+        "온도가 올라가면 저항이 내려간다",
+        "온도가 올라가면 저항이 올라간다",
+        "빛이 밝아지면 저항이 내려간다",
+        "온도와 무관하게 저항이 일정하다"
+      ],
+      "answerIndex": 0,
+      "explanation": "NTC = Negative Temperature Coefficient(음의 온도계수). 온도가 올라가면 저항이 내려간다. 온도 제어 응용에 사용된다. 온도가 올라갈 때 저항이 올라가는 것은 PTC이며, 밝아질 때 저항이 내려가는 것은 CdS(광센서)다.",
+      "source": "§7 p.15~16"
+    },
+    {
+      "id": "s7-q10",
+      "section": 7,
+      "topic": "sensor",
+      "type": "short",
+      "difficulty": 1,
+      "starred": false,
+      "question": "NTC 서미스터의 약자 NTC가 의미하는 영어 풀네임을 쓰시오.",
+      "answerText": "Negative Temperature Coefficient",
+      "acceptable": [
+        "Negative Temperature Coefficient",
+        "negative temperature coefficient",
+        "음의 온도계수",
+        "부의 온도계수"
+      ],
+      "explanation": "NTC = Negative Temperature Coefficient(음의 온도계수). 이름 그대로 온도가 올라가면 저항이 내려가는 음의 관계를 갖는다. 교수님이 슬라이드에 없는 내용을 말로만 강조(🎤)한 부분이다.",
+      "source": "§7 p.15~16"
+    },
+    {
+      "id": "s7-q11",
+      "section": 7,
+      "topic": "sensor",
+      "type": "mc",
+      "difficulty": 2,
+      "starred": false,
+      "question": "재활 운동기기의 다리 관절 각도 측정처럼 각도/위치 감지 센서로 쓰기에 가장 적합하고 내구성이 좋은 가변저항 종류는?",
+      "choices": [
+        "권선형(코일 감김)",
+        "카본형",
+        "반고정(트리머)",
+        "슬라이드 볼륨"
+      ],
+      "answerIndex": 0,
+      "explanation": "권선형(코일 감김)은 내구성이 좋아 각도/위치 감지 센서로 사용되며, 톱니바퀴를 달아 위치 추적, 재활 운동기기의 다리 관절 각도 측정 등에 쓰인다. 카본형은 오래 쓰면 접촉 불량 가능, 슬라이드 볼륨은 직선 위치 검출, 트리머는 기준값 조정용이다.",
+      "source": "§7 p.15~16"
+    },
+    {
+      "id": "s7-q12",
+      "section": 7,
+      "topic": "sensor",
+      "type": "mc",
+      "difficulty": 1,
+      "starred": false,
+      "question": "한 번 설정한 후 고정하여 기준값 조정용으로 쓰는 가변저항 종류는?",
+      "choices": [
+        "반고정(트리머)",
+        "권선형",
+        "카본형",
+        "슬라이드 볼륨"
+      ],
+      "answerIndex": 0,
+      "explanation": "반고정(트리머)은 한 번 설정한 후 고정하는 기준값 조정용 가변저항이다. 권선형은 각도/위치 감지, 슬라이드 볼륨은 직선 위치 검출, 카본형은 일반적 용도이지만 오래 쓰면 접촉 불량이 생긴다.",
+      "source": "§7 p.15~16"
+    },
+    {
+      "id": "s7-q13",
+      "section": 7,
+      "topic": "sensor",
+      "type": "short",
+      "difficulty": 2,
+      "starred": false,
+      "question": "전압 분배 회로에서 출력 노드(A0)가 연결되는 위치를 회로 구성 순서로 쓰시오. (+5V부터 GND까지)",
+      "answerText": "+5V — R1 — (중간 노드 → A0) — R2 — GND",
+      "acceptable": [
+        "+5V — R1 — (중간 노드 → A0) — R2 — GND",
+        "+5V - R1 - A0 - R2 - GND",
+        "5V-R1-A0(중간노드)-R2-GND",
+        "VCC-R1-중간노드(A0)-R2-GND",
+        "R1과 R2 사이의 중간 노드에 A0 연결"
+      ],
+      "explanation": "회로는 +5V — R1 — (중간 노드 → A0) — R2 — GND 구조다. A0는 R1과 R2 사이의 중간 노드에 연결되며, 이 노드의 전압이 Vout = Vin×R2/(R1+R2)로 결정되어 아두이노 ADC로 읽힌다.",
+      "source": "§7 p.15~16"
+    },
+    {
+      "id": "s7-q14",
+      "section": 7,
+      "topic": "sensor",
+      "type": "ox",
+      "difficulty": 2,
+      "starred": false,
+      "question": "가변저항은 와이퍼를 움직여도 양 끝 사이의 전체 저항은 변하지 않는다.",
+      "choices": ["O (맞다)", "X (틀리다)"],
+      "answerIndex": 0,
+      "explanation": "맞다(🎤). 가변저항의 양 끝 사이 전체 저항은 불변이다. 와이퍼가 움직이면 그 전체 저항이 R1과 R2로 나뉘는 비율(R1:R2)만 바뀌어 출력 전압이 변한다. 전체 저항 자체가 변하는 것이 아니다.",
+      "source": "§7 p.15~16"
+    }
+  ]
+}

@@ -1,0 +1,415 @@
+[
+  {
+    "id": "fc01",
+    "front": "우노 PWM 가능 핀 6개는?",
+    "back": "3, 5, 6, 9, 10, 11 (핀에 ~ 표시)",
+    "topic": "pwm",
+    "starred": true
+  },
+  {
+    "id": "fc02",
+    "front": "analogWrite의 출력 값 범위는?",
+    "back": "8비트, 0(0%) ~ 255(100%)",
+    "topic": "pwm",
+    "starred": true
+  },
+  {
+    "id": "fc03",
+    "front": "PWM 주파수와 주기는?",
+    "back": "490Hz (주기 ≈ 1/490 ≈ 2ms)",
+    "topic": "pwm",
+    "starred": true
+  },
+  {
+    "id": "fc04",
+    "front": "우노 ADC 해상도와 표현 단계 수는?",
+    "back": "10비트, 2^10 = 1024단계",
+    "topic": "adc",
+    "starred": true
+  },
+  {
+    "id": "fc05",
+    "front": "ADC 값 범위는?",
+    "back": "0 ~ 1023 (0부터 시작하므로 1023까지)",
+    "topic": "adc",
+    "starred": true
+  },
+  {
+    "id": "fc06",
+    "front": "ADC 1스텝 전압은?",
+    "back": "5V/1024 ≈ 0.0049V (약 4.9mV)",
+    "topic": "adc",
+    "starred": true
+  },
+  {
+    "id": "fc07",
+    "front": "ADC 기준 전압(reference) 디폴트 값은?",
+    "back": "5V (이 전압이 변환 범위를 결정)",
+    "topic": "adc",
+    "starred": true
+  },
+  {
+    "id": "fc08",
+    "front": "ADC 변환 예: 0V / 2.5V / 5V는 각각 얼마?",
+    "back": "0V→0, 2.5V→512, 5V→1023",
+    "topic": "adc",
+    "starred": true
+  },
+  {
+    "id": "fc09",
+    "front": "3V를 우노 ADC로 읽으면 대략 얼마? (식 포함)",
+    "back": "3/5 × 1023 ≈ 614",
+    "topic": "adc",
+    "starred": true
+  },
+  {
+    "id": "fc10",
+    "front": "외부 풀다운/풀업 저항의 보통 값과 SMD 표기는?",
+    "back": "10kΩ, 표기 \"103\" = 10×10^3 🎤",
+    "topic": "power",
+    "starred": true
+  },
+  {
+    "id": "fc11",
+    "front": "아두이노 내부 풀업 저항값과 활성화 방법은?",
+    "back": "약 20kΩ, INPUT_PULLUP으로 활성화 🎤",
+    "topic": "power",
+    "starred": true
+  },
+  {
+    "id": "fc12",
+    "front": "풀다운 vs 풀업: 저항 연결 방향과 평상시 입력 레벨은?",
+    "back": "풀다운=GND쪽·평상시 LOW / 풀업=+5V쪽·평상시 HIGH",
+    "topic": "digin",
+    "starred": true
+  },
+  {
+    "id": "fc13",
+    "front": "교수님 실전 권장: 입력 처리의 기본 방식은?",
+    "back": "내부 풀업을 기본으로 쓰고 LOW로 떨어지는 것(falling) 감지 🎤",
+    "topic": "digin",
+    "starred": false
+  },
+  {
+    "id": "fc14",
+    "front": "디바운싱 소프트웨어: 상태 변화 감지 후 몇 ms 대기 후 재확인?",
+    "back": "5ms 대기 후 다시 읽음",
+    "topic": "debounce",
+    "starred": true
+  },
+  {
+    "id": "fc15",
+    "front": "스위치 바운싱(채터링)이란?",
+    "back": "기계 접점 스프링 때문에 누르는 순간 HIGH↔LOW 여러 번 진동",
+    "topic": "debounce",
+    "starred": false
+  },
+  {
+    "id": "fc16",
+    "front": "CdS 포토 레지스터: 어두울 때와 밝을 때 저항은?",
+    "back": "어두울 때 ~200kΩ, 밝을 때 ~5kΩ",
+    "topic": "sensor",
+    "starred": true
+  },
+  {
+    "id": "fc17",
+    "front": "전압 분배 공식은?",
+    "back": "Vout = Vin × R2 / (R1 + R2)",
+    "topic": "sensor",
+    "starred": true
+  },
+  {
+    "id": "fc18",
+    "front": "CdS를 R1(위)/R2(아래)에 달면 밝아질 때 출력 전압은?",
+    "back": "R1(위)→상승, R2(아래)→하강 🎤",
+    "topic": "sensor",
+    "starred": false
+  },
+  {
+    "id": "fc19",
+    "front": "아두이노 데이터 핀 1개 / USB 전원 / 배럴 잭 최대 전류는?",
+    "back": "40mA / 500mA / 1A",
+    "topic": "power",
+    "starred": true
+  },
+  {
+    "id": "fc20",
+    "front": "7805 레귤레이터 핀 배치는?",
+    "back": "1=IN, 2=GND, 3=OUT (9V 입력 → 5V 출력)",
+    "topic": "power",
+    "starred": false
+  },
+  {
+    "id": "fc21",
+    "front": "두 레귤레이터 5V 출력끼리, GND는 각각 어떻게?",
+    "back": "5V 출력끼리는 절대 연결 금지, GND는 반드시 공통",
+    "topic": "power",
+    "starred": false
+  },
+  {
+    "id": "fc22",
+    "front": "모터 전원을 로직과 분리하는 이유 2가지는?",
+    "back": "①큰 전류로 전압 흔들려 컨트롤러 오동작 ②브러시 노이즈 영향 🎤",
+    "topic": "power",
+    "starred": false
+  },
+  {
+    "id": "fc23",
+    "front": "서보 펄스폭–각도: 0°/45°/90°/180°는?",
+    "back": "0°=1ms, 45°=1.25ms, 90°=1.5ms, 180°=2ms",
+    "topic": "servo",
+    "starred": true
+  },
+  {
+    "id": "fc24",
+    "front": "서보 펄스 주기와 주파수는?",
+    "back": "20ms 간격(주기), 1초에 50회 = 50Hz",
+    "topic": "servo",
+    "starred": true
+  },
+  {
+    "id": "fc25",
+    "front": "표준 서보 vs 연속 회전 서보: 펄스 길이의 의미는?",
+    "back": "표준=회전 각도 결정 / 연속=회전 속도 제어",
+    "topic": "servo",
+    "starred": false
+  },
+  {
+    "id": "fc26",
+    "front": "서보 3선 배선 색은?",
+    "back": "빨강=전원(+), 검정·갈색=GND, 흰색·주황=제어선",
+    "topic": "servo",
+    "starred": false
+  },
+  {
+    "id": "fc27",
+    "front": "서보 데드밴드(떨림) 평활 커패시터 값과 외부 전원 권장 전류는?",
+    "back": "100~1000µF, 외부 전원 2A 이상",
+    "topic": "servo",
+    "starred": true
+  },
+  {
+    "id": "fc28",
+    "front": "서보 데드밴드 원인 4가지는?",
+    "back": "①해상도·지터 ②물리적 부하 ③전압 불안정 ④기어 유격(백래시)",
+    "topic": "servo",
+    "starred": true
+  },
+  {
+    "id": "fc29",
+    "front": "서보 데드밴드 소프트웨어 해결책은?",
+    "back": "①도달 후 detach()로 신호 차단 ②미세 변화(1~2도 미만) 명령 무시",
+    "topic": "servo",
+    "starred": false
+  },
+  {
+    "id": "fc30",
+    "front": "write(45)보다 정밀한 서보 제어 함수는?",
+    "back": "writeMicroseconds(1250) — µs 단위, 의료기기·정밀장치에 추천 🎤",
+    "topic": "servo",
+    "starred": false
+  },
+  {
+    "id": "fc31",
+    "front": "스테핑 모터: 1회전 스텝 수와 스텝당 각도는?",
+    "back": "200스텝/회전, 1.8°/스텝",
+    "topic": "stepper",
+    "starred": true
+  },
+  {
+    "id": "fc32",
+    "front": "스테핑 모터 하프스텝 각도는?",
+    "back": "0.9° 🎤",
+    "topic": "stepper",
+    "starred": true
+  },
+  {
+    "id": "fc33",
+    "front": "실제 스테핑 모터의 코일·상 구성과 구동 전압(교재)은?",
+    "back": "8코일 2상, 12V",
+    "topic": "stepper",
+    "starred": true
+  },
+  {
+    "id": "fc34",
+    "front": "NEMA-17 크기는?",
+    "back": "전면부 42mm × 42mm (크기 규격)",
+    "topic": "stepper",
+    "starred": true
+  },
+  {
+    "id": "fc35",
+    "front": "스테핑 모터 탈조(스텝 놓침) 조건과 대책은?",
+    "back": "너무 높은 주파수 구동 시 발생 → 부하에 맞는 적절한 주파수/충분한 용량 모터 ⭐🎤",
+    "topic": "stepper",
+    "starred": true
+  },
+  {
+    "id": "fc36",
+    "front": "단극(unipolar) vs 쌍극(bipolar) 스테핑 모터 차이는?",
+    "back": "단극=전류 항상 같은 방향·토크 절반 / 쌍극=방향 바뀜·H-브리지 필요·전체 코일",
+    "topic": "stepper",
+    "starred": false
+  },
+  {
+    "id": "fc37",
+    "front": "7세그먼트 LED 총 개수 구성은?",
+    "back": "LED 8개 = 세그먼트 a~g 7개 + 소수점 DP 1개",
+    "topic": "sevenseg",
+    "starred": false
+  },
+  {
+    "id": "fc38",
+    "front": "4자리 7세그먼트 다이나믹 구동 핀 수는? (개별 연결이면?)",
+    "back": "12핀(세그먼트 8 + 자리 4), 개별 연결이면 32핀 🎤",
+    "topic": "sevenseg",
+    "starred": true
+  },
+  {
+    "id": "fc39",
+    "front": "7세그먼트 전류 제한 저항값은?",
+    "back": "330Ω (세그먼트 쪽)",
+    "topic": "sevenseg",
+    "starred": true
+  },
+  {
+    "id": "fc40",
+    "front": "공통 양극 vs 공통 음극 7세그: 세그먼트 점등 조건은?",
+    "back": "공통 양극=공통핀 VCC·제어핀 LOW / 공통 음극=공통핀 GND·제어핀 HIGH",
+    "topic": "sevenseg",
+    "starred": true
+  },
+  {
+    "id": "fc41",
+    "front": "커먼 캐소드에서 F를 표시하는 패턴(ABCDEFG·DP)과 16진수는?",
+    "back": "a,e,f,g만 HIGH = 1000 1110 = 0x8E ⭐",
+    "topic": "sevenseg",
+    "starred": true
+  },
+  {
+    "id": "fc42",
+    "front": "커먼 캐소드 F 패턴(0x8E)을 커먼 애노드에서 쓰려면?",
+    "back": "전부 반전 → 0111 0001 = 0x71 ⭐",
+    "topic": "sevenseg",
+    "starred": true
+  },
+  {
+    "id": "fc43",
+    "front": "커먼 캐소드에서 숫자 2의 패턴과 16진수는?",
+    "back": "a b d e g = 1101 1010 = 0xDA ⭐",
+    "topic": "sevenseg",
+    "starred": true
+  },
+  {
+    "id": "fc44",
+    "front": "커먼 캐소드에서 숫자 0과 1의 패턴 요령은?",
+    "back": "0=g와 dp만 0 나머지 1(0xFC) / 1=b,c만 1(0x60)",
+    "topic": "sevenseg",
+    "starred": true
+  },
+  {
+    "id": "fc45",
+    "front": "커먼 캐소드에서 문자 A의 패턴과 만드는 법은?",
+    "back": "abcefg = 1110 1110 = 0xEE, 8에서 d만 끄면 A ⭐🎤",
+    "topic": "sevenseg",
+    "starred": true
+  },
+  {
+    "id": "fc46",
+    "front": "커먼 애노드 7세그에서 세그먼트를 켜려면 제어핀 레벨은?",
+    "back": "켤 세그먼트가 LOW로 떨어져야 불이 들어옴 (캐소드 패턴 반전) ⭐",
+    "topic": "sevenseg",
+    "starred": true
+  },
+  {
+    "id": "fc47",
+    "front": "4자리 7세그를 12핀으로 제어하는 원리는?",
+    "back": "세그먼트선 병렬 공통 + COM1~4 고속 순환 스캔, 잔상 효과로 모두 켜진 듯 보임",
+    "topic": "sevenseg",
+    "starred": false
+  },
+  {
+    "id": "fc48",
+    "front": "가변저항 ADC 값에 따른 모터 동작 3구간은? (데드밴드 포함)",
+    "back": "0~462 역방향 / 462~562 정지(중심 512) / 562~1023 정방향 ⭐",
+    "topic": "dcmotor",
+    "starred": true
+  },
+  {
+    "id": "fc49",
+    "front": "L293D와 L298의 차이 2가지는?",
+    "back": "L293D=소용량(16핀)·플라이백 다이오드 내장 / L298=대용량·다이오드 미내장(외부 필요) ⭐🎤",
+    "topic": "dcmotor",
+    "starred": true
+  },
+  {
+    "id": "fc50",
+    "front": "H-브리지에서 방향(제어핀)을 바꾸기 전에 해야 할 것은?",
+    "back": "먼저 EN을 LOW로 — 스위칭 중 단락 방지 ⭐",
+    "topic": "dcmotor",
+    "starred": true
+  },
+  {
+    "id": "fc51",
+    "front": "H-브리지에서 같은 쪽 위·아래 스위치를 동시에 ON하면?",
+    "back": "전원-그라운드가 그대로 쇼트(단락) — 절대 금지 🎤",
+    "topic": "dcmotor",
+    "starred": true
+  },
+  {
+    "id": "fc52",
+    "front": "H-브리지 정방향/역방향 스위치 조합은?",
+    "back": "정방향=좌상+우하 닫힘 / 역방향=우상+좌하 닫힘 / 브레이크=같은 단 둘 닫힘",
+    "topic": "dcmotor",
+    "starred": false
+  },
+  {
+    "id": "fc53",
+    "front": "map 함수의 출력 인자 순서를 뒤집으면(예: 255,0)?",
+    "back": "역방향 매핑 — 입력이 작을수록 출력이 큼 (HIGH→LOW 동작 가능) 🎤",
+    "topic": "map",
+    "starred": false
+  },
+  {
+    "id": "fc54",
+    "front": "constrain을 함께 쓰는 이유는?",
+    "back": "범위 초과 시 값 틀어짐 방지 (예: 256→0 overflow wrap 방지) 🎤",
+    "topic": "map",
+    "starred": false
+  },
+  {
+    "id": "fc55",
+    "front": "RGB LED 공통 양극형: 0% 듀티와 100% 듀티의 동작은?",
+    "back": "0% 듀티→가장 밝게 / 100% 듀티→완전히 꺼짐 (동작 반대)",
+    "topic": "rgb",
+    "starred": false
+  },
+  {
+    "id": "fc56",
+    "front": "RGB LED 3색 모두 켜면 무슨 색?",
+    "back": "흰색 🎤 (공통 양극형이 대부분, 각 색마다 전류 제한 저항 3개)",
+    "topic": "rgb",
+    "starred": false
+  },
+  {
+    "id": "fc57",
+    "front": "시리얼 플로터 단축키와 여러 선 구분 방법은?",
+    "back": "Ctrl+Shift+L, 값 사이를 공백으로 구분하면 색깔별 여러 선 표시",
+    "topic": "serial",
+    "starred": false
+  },
+  {
+    "id": "fc58",
+    "front": "핀 번호 선언 3방식 중 가장 추천되는 것과 이유는?",
+    "back": "const int — 타입 정보로 컴파일러 체크, 메모리 최적화 (강추)",
+    "topic": "pin",
+    "starred": false
+  },
+  {
+    "id": "fc59",
+    "front": "#define 사용 시 주의점은?",
+    "back": "컴파일 전 텍스트 치환 → 끝에 세미콜론(;) 안 붙임, 타입 없어 디버깅 어려움",
+    "topic": "pin",
+    "starred": false
+  }
+]

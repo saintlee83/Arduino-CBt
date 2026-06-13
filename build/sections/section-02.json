@@ -1,0 +1,304 @@
+{
+  "section": 2,
+  "title": "PWM(펄스 폭 변조)과 아날로그 출력",
+  "pages": "p.4~6",
+  "topic": "pwm",
+  "notesBlocks": [
+    {
+      "type": "subheading",
+      "text": "핵심 개념"
+    },
+    {
+      "type": "list",
+      "ordered": false,
+      "items": [
+        {
+          "text": "아두이노 우노에는 DAC(디지털→아날로그 변환기)가 없다 → 진짜 아날로그 전압 출력 불가 (DAC 내장 보드: 아두이노 듀에)",
+          "badge": null
+        },
+        {
+          "text": "대신 PWM으로 아날로그와 비슷한 효과를 낸다 ( analogWrite )",
+          "badge": null
+        },
+        {
+          "text": "실제 출력 전압은 0V 또는 5V뿐 — 주기가 짧아 사람 눈이 평균 밝기로 인식",
+          "badge": null
+        },
+        {
+          "text": "듀티 사이클(duty cycle) = 한 주기 중 HIGH인 비율 → LED 밝기는 듀티 사이클에 비례",
+          "badge": null
+        }
+      ]
+    },
+    {
+      "type": "subheading",
+      "text": "핵심 수치 (암기)"
+    },
+    {
+      "type": "table",
+      "headers": ["항목", "값"],
+      "rows": [
+        ["우노 PWM 가능 핀", "3, 5, 6, 9, 10, 11번 (핀에 ~ 표시)"],
+        ["출력 값 범위", "8비트, 0(0%) ~ 255(100%)"],
+        ["PWM 주파수", "490Hz (주기 ≒ 1/490 ≒ 2ms)"]
+      ]
+    },
+    {
+      "type": "para",
+      "text": "analogWrite(3, 0) → 항상 꺼짐(0V) / analogWrite(3, 127) → 50% 듀티, 절반 밝기 / analogWrite(3, 255) → 항상 켜짐(5V)"
+    },
+    {
+      "type": "callout",
+      "variant": "info",
+      "text": "강의 슬라이드 p.5 — 듀티 사이클(0/25/50/75/100%)별 PWM 구형파 파형"
+    },
+    {
+      "type": "callout",
+      "variant": "mic",
+      "text": "PWM 주파수를 바꾸려면 MCU 내부 타이머의 분주비(prescaler)를 바꿔준다 (슬라이드에 없음)"
+    },
+    {
+      "type": "callout",
+      "variant": "mic",
+      "text": "용도: 모터 속도 조절, 빛 밝기 조절 + 490Hz 신호에 다시 변조(모듈레이션)를 걸어 단속하는 응용도 가능"
+    }
+  ],
+  "questions": [
+    {
+      "id": "s2-q01",
+      "section": 2,
+      "topic": "pwm",
+      "type": "mc",
+      "difficulty": 1,
+      "starred": false,
+      "question": "아두이노 우노에서 PWM 신호를 출력할 수 있는 핀 번호를 모두 올바르게 나열한 것은?",
+      "choices": [
+        "3, 5, 6, 9, 10, 11",
+        "2, 4, 7, 8, 12, 13",
+        "0, 1, 2, 3, 4, 5",
+        "3, 5, 6, 9, 10, 11, 13",
+        "5, 6, 9, 10"
+      ],
+      "answerIndex": 0,
+      "explanation": "우노의 PWM 가능 핀은 3, 5, 6, 9, 10, 11번 6개이며 보드에 ~ 표시가 되어 있다. 2/4/7/8/12/13은 PWM이 안 되는 일반 디지털 핀이고, 13번은 PWM 핀이 아니므로 13을 더한 보기도 틀리다.",
+      "source": "§2 p.4~6"
+    },
+    {
+      "id": "s2-q02",
+      "section": 2,
+      "topic": "pwm",
+      "type": "mc",
+      "difficulty": 1,
+      "starred": false,
+      "question": "아두이노 우노의 PWM 출력 값(analogWrite 인자) 범위로 옳은 것은?",
+      "choices": [
+        "8비트, 0 ~ 255",
+        "10비트, 0 ~ 1023",
+        "8비트, 0 ~ 256",
+        "10비트, 0 ~ 1024",
+        "16비트, 0 ~ 65535"
+      ],
+      "answerIndex": 0,
+      "explanation": "analogWrite의 PWM 값은 8비트로 0(0%)부터 255(100%)까지이다. 0~1023(10비트)은 analogRead(ADC)의 범위이므로 혼동하면 안 된다. 8비트의 최댓값은 256이 아니라 255이다.",
+      "source": "§2 p.4~6"
+    },
+    {
+      "id": "s2-q03",
+      "section": 2,
+      "topic": "pwm",
+      "type": "mc",
+      "difficulty": 1,
+      "starred": false,
+      "question": "아두이노 우노의 PWM 기본 주파수와 그에 해당하는 대략적인 주기로 옳은 것은?",
+      "choices": [
+        "490Hz, 약 2ms",
+        "50Hz, 약 20ms",
+        "1000Hz, 약 1ms",
+        "490Hz, 약 0.5ms",
+        "245Hz, 약 4ms"
+      ],
+      "answerIndex": 0,
+      "explanation": "우노 PWM 주파수는 490Hz이고 주기는 1/490 ≒ 2ms이다. 50Hz/20ms는 서보 모터 펄스 주기이므로 다른 개념이다.",
+      "source": "§2 p.4~6"
+    },
+    {
+      "id": "s2-q04",
+      "section": 2,
+      "topic": "pwm",
+      "type": "ox",
+      "difficulty": 1,
+      "starred": false,
+      "question": "아두이노 우노에는 DAC(디지털→아날로그 변환기)가 내장되어 있어 진짜 아날로그 전압을 직접 출력할 수 있다.",
+      "choices": ["O (맞다)", "X (틀리다)"],
+      "answerIndex": 1,
+      "explanation": "우노에는 DAC가 없어 진짜 아날로그 전압 출력이 불가능하다. 대신 PWM으로 아날로그와 비슷한 효과를 낸다. DAC가 내장된 보드는 아두이노 듀에이다.",
+      "source": "§2 p.4~6"
+    },
+    {
+      "id": "s2-q05",
+      "section": 2,
+      "topic": "pwm",
+      "type": "mc",
+      "difficulty": 2,
+      "starred": false,
+      "question": "DAC를 내장하여 진짜 아날로그 전압 출력이 가능한 아두이노 보드로 본 정리본에 명시된 것은?",
+      "choices": [
+        "아두이노 듀에",
+        "아두이노 우노",
+        "아두이노 나노",
+        "아두이노 메가",
+        "아두이노 프로 미니"
+      ],
+      "answerIndex": 0,
+      "explanation": "정리본에서 DAC 내장 보드로 명시된 것은 아두이노 듀에이다. 우노를 포함한 나머지 보드는 본 자료에서 DAC 내장으로 언급되지 않았다.",
+      "source": "§2 p.4~6"
+    },
+    {
+      "id": "s2-q06",
+      "section": 2,
+      "topic": "pwm",
+      "type": "ox",
+      "difficulty": 2,
+      "starred": false,
+      "question": "PWM으로 LED 밝기를 조절할 때 핀의 실제 출력 전압은 0V와 5V 사이의 중간 전압(예: 2.5V)이 직접 나온다.",
+      "choices": ["O (맞다)", "X (틀리다)"],
+      "answerIndex": 1,
+      "explanation": "실제 출력 전압은 0V 또는 5V뿐이다. 주기가 짧아(490Hz) 사람 눈이 HIGH/LOW의 평균을 밝기로 인식하는 것이지, 중간 전압이 직접 출력되는 것이 아니다.",
+      "source": "§2 p.4~6"
+    },
+    {
+      "id": "s2-q07",
+      "section": 2,
+      "topic": "pwm",
+      "type": "mc",
+      "difficulty": 2,
+      "starred": false,
+      "question": "PWM에서 '듀티 사이클(duty cycle)'의 정의로 가장 정확한 것은?",
+      "choices": [
+        "한 주기 중 HIGH인 시간의 비율",
+        "한 주기 중 LOW인 시간의 비율",
+        "1초당 반복되는 주기의 개수",
+        "출력 전압의 최댓값과 최솟값의 차이",
+        "한 주기의 전체 시간 길이"
+      ],
+      "answerIndex": 0,
+      "explanation": "듀티 사이클은 한 주기 중 HIGH인 비율로 정의되며, LED 밝기는 이 듀티 사이클에 비례한다. 1초당 주기 개수는 주파수, 한 주기의 시간은 주기에 해당한다.",
+      "source": "§2 p.4~6"
+    },
+    {
+      "id": "s2-q08",
+      "section": 2,
+      "topic": "pwm",
+      "type": "mc",
+      "difficulty": 2,
+      "starred": false,
+      "question": "analogWrite(3, 127)을 실행했을 때의 동작으로 가장 옳은 것은?",
+      "choices": [
+        "약 50% 듀티 사이클로 절반 밝기로 켜진다",
+        "항상 꺼져서 0V가 출력된다",
+        "항상 켜져서 5V가 출력된다",
+        "약 25% 듀티 사이클로 켜진다",
+        "127Hz의 주파수로 깜빡인다"
+      ],
+      "answerIndex": 0,
+      "explanation": "값 127은 255의 약 절반이므로 약 50% 듀티 사이클이 되어 절반 밝기로 켜진다. 항상 꺼짐은 0, 항상 켜짐(5V)은 255일 때이다. 127은 듀티 값이지 주파수가 아니다.",
+      "source": "§2 p.4~6"
+    },
+    {
+      "id": "s2-q09",
+      "section": 2,
+      "topic": "pwm",
+      "type": "mc",
+      "difficulty": 2,
+      "starred": false,
+      "question": "analogWrite(3, 255)와 analogWrite(3, 0)의 동작을 옳게 짝지은 것은?",
+      "choices": [
+        "255 → 항상 켜짐(5V) / 0 → 항상 꺼짐(0V)",
+        "255 → 항상 꺼짐(0V) / 0 → 항상 켜짐(5V)",
+        "255 → 50% 듀티 / 0 → 100% 듀티",
+        "255 → 항상 켜짐(0V) / 0 → 항상 꺼짐(5V)",
+        "255 → 절반 밝기 / 0 → 절반 밝기"
+      ],
+      "answerIndex": 0,
+      "explanation": "255는 100% 듀티로 항상 켜짐(5V), 0은 0% 듀티로 항상 꺼짐(0V)이다. 값과 전압의 대응을 뒤바꾸거나 절반 밝기로 보는 것은 오개념이다.",
+      "source": "§2 p.4~6"
+    },
+    {
+      "id": "s2-q10",
+      "section": 2,
+      "topic": "pwm",
+      "type": "mc",
+      "difficulty": 3,
+      "starred": true,
+      "question": "🎤 교수님 강조: 아두이노에서 PWM의 주파수(490Hz)를 바꾸고 싶다면 무엇을 조정해야 하는가?",
+      "choices": [
+        "MCU 내부 타이머의 분주비(prescaler)",
+        "analogWrite의 두 번째 인자(0~255) 값",
+        "PWM 핀에 연결된 전류 제한 저항 값",
+        "보드의 동작 기준 전압(5V)",
+        "듀티 사이클의 HIGH 비율"
+      ],
+      "answerIndex": 0,
+      "explanation": "교수님이 구두로 강조한 내용으로(슬라이드에 없음), PWM 주파수는 MCU 내부 타이머의 분주비(prescaler)를 바꿔서 변경한다. analogWrite 값(0~255)은 듀티 사이클(밝기)을 바꿀 뿐 주파수를 바꾸지 않는다.",
+      "source": "§2 p.4~6"
+    },
+    {
+      "id": "s2-q11",
+      "section": 2,
+      "topic": "pwm",
+      "type": "mc",
+      "difficulty": 2,
+      "starred": true,
+      "question": "🎤 교수님이 언급한 PWM의 대표적 용도로 묶인 것 중 가장 적절한 것은?",
+      "choices": [
+        "모터 속도 조절, 빛 밝기 조절, 490Hz 신호에 다시 변조를 걸어 단속하는 응용",
+        "센서 전압을 디지털 값으로 읽기, 온도 측정, 거리 측정",
+        "시리얼 통신 속도 설정, 데이터 전송, 인터럽트 처리",
+        "아날로그 입력 해상도 향상, 노이즈 제거, 평균 필터링",
+        "EEPROM 저장, 부트로더 갱신, 클럭 분주"
+      ],
+      "answerIndex": 0,
+      "explanation": "교수님이 든 PWM 용도는 모터 속도 조절과 빛 밝기 조절이며, 추가로 490Hz 신호에 다시 변조(모듈레이션)를 걸어 단속하는 응용도 가능하다고 강조했다. 센서 읽기는 analogRead(ADC)의 영역이다.",
+      "source": "§2 p.4~6"
+    },
+    {
+      "id": "s2-q12",
+      "section": 2,
+      "topic": "pwm",
+      "type": "short",
+      "difficulty": 1,
+      "starred": false,
+      "question": "PWM에서 한 주기 중 HIGH인 시간의 비율을 무엇이라고 하는가? (용어로 답)",
+      "answerText": "듀티 사이클",
+      "acceptable": ["듀티 사이클", "듀티사이클", "duty cycle", "duty-cycle", "듀티비"],
+      "explanation": "한 주기 중 HIGH인 비율은 듀티 사이클이며, LED 밝기는 이 듀티 사이클에 비례한다.",
+      "source": "§2 p.4~6"
+    },
+    {
+      "id": "s2-q13",
+      "section": 2,
+      "topic": "pwm",
+      "type": "short",
+      "difficulty": 2,
+      "starred": false,
+      "question": "analogWrite(WLED, 191)처럼 8비트 PWM에 191을 주면 듀티 사이클은 대략 몇 %인가? (정수 %로 답, 191/255 기준)",
+      "answerText": "약 75%",
+      "acceptable": ["75%", "약 75%", "75", "74%", "74", "약 74%", "74~75%"],
+      "explanation": "8비트 PWM은 0~255가 0~100%에 대응하므로 191/255 ≒ 0.749 → 약 75% 듀티이다. 슬라이드 p.5 파형의 0/25/50/75/100% 중 75%에 해당한다(127은 50%, 255는 100%).",
+      "source": "§2 p.4~6"
+    },
+    {
+      "id": "s2-q14",
+      "section": 2,
+      "topic": "pwm",
+      "type": "short",
+      "difficulty": 2,
+      "starred": false,
+      "question": "PWM 값(8비트)에서 100% 듀티 사이클(항상 5V로 켜짐)에 해당하는 정수 값은 얼마인가?",
+      "answerText": "255",
+      "acceptable": ["255", "0xFF", "11111111", "255(0xFF)"],
+      "explanation": "8비트 PWM의 최댓값은 255로 100% 듀티에 해당하며 항상 켜짐(5V)이 된다. 8비트 최댓값을 256으로 착각하지 않도록 주의한다.",
+      "source": "§2 p.4~6"
+    }
+  ]
+}

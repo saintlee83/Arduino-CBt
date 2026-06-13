@@ -1,0 +1,475 @@
+{
+  "section": 12,
+  "title": "서보 모터 (펄스폭/데드밴드)",
+  "pages": "p.32~37",
+  "topic": "servo",
+  "notesBlocks": [
+    {
+      "type": "subheading",
+      "text": "서보 모터 종류 (p.32)"
+    },
+    {
+      "type": "table",
+      "headers": ["구분", "표준 서보", "연속 회전 서보"],
+      "rows": [
+        ["회전 범위", "제한됨 (보통 0~180도)", "360도 연속 회전"],
+        ["펄스 길이의 의미", "회전 각도 결정", "회전 속도 제어"]
+      ]
+    },
+    {
+      "type": "callout",
+      "variant": "mic",
+      "text": "시중에서 일반적으로 쓰는 것은 표준 서보다. 활공 드론의 방향타 등 각도 제어에 많이 사용한다."
+    },
+    {
+      "type": "subheading",
+      "text": "배선 (3선)"
+    },
+    {
+      "type": "list",
+      "ordered": false,
+      "items": [
+        {"text": "빨간색 = 전원(+) / 검은색·갈색 = GND / 흰색·주황색 = 제어선", "badge": null},
+        {"text": "전원은 항상 연결하고, 제어선으로 위치 신호를 계속 전송한다.", "badge": null}
+      ]
+    },
+    {
+      "type": "subheading",
+      "text": "펄스폭-각도 관계 (p.33~34) — 표 암기 필수"
+    },
+    {
+      "type": "callout",
+      "variant": "star",
+      "text": "펄스폭-각도 표는 교수님이 출제 예고한 암기 필수 부분이다."
+    },
+    {
+      "type": "table",
+      "headers": ["각도", "펄스 폭"],
+      "rows": [
+        ["0도", "1ms"],
+        ["45도", "1.25ms"],
+        ["90도", "1.5ms"],
+        ["180도", "2ms"]
+      ]
+    },
+    {
+      "type": "list",
+      "ordered": false,
+      "items": [
+        {"text": "펄스는 20ms 간격(주기)으로 1초에 50회(50Hz) 계속 보내야 그 각도를 유지한다.", "badge": null},
+        {"text": "보통 Servo.h 라이브러리를 사용한다.", "badge": null},
+        {"text": "writeMicroseconds(1250)처럼 마이크로초 단위 제어가 write(45)보다 훨씬 정밀 — 의료기기·정밀장치에 추천 (p.35).", "badge": "mic"}
+      ]
+    },
+    {
+      "type": "para",
+      "text": "강의 슬라이드 p.34 — 펄스폭(1/1.25/1.5/2ms)에 따른 서보 각도, 주기 20ms."
+    },
+    {
+      "type": "subheading",
+      "text": "사용 시 주의 (p.35)"
+    },
+    {
+      "type": "list",
+      "ordered": true,
+      "items": [
+        {"text": "전원 분리: 서보는 움직일 때 순간 전류가 크다 → 아두이노 5V 핀에 직결하면 리셋/오동작. 별도 전원 + GND는 반드시 공통으로 연결.", "badge": null},
+        {"text": "Servo.h의 한계: 사용 시 9, 10번 핀의 PWM(analogWrite) 기능에 제한이 발생할 수 있다 → 핀 배치를 미리 확인.", "badge": null}
+      ]
+    },
+    {
+      "type": "subheading",
+      "text": "데드밴드(Deadband) — 서보가 \"지잉-\" 떨리는 현상 (p.36~37)"
+    },
+    {
+      "type": "callout",
+      "variant": "star",
+      "text": "데드밴드는 교수님이 출제 예고한 부분이다."
+    },
+    {
+      "type": "callout",
+      "variant": "mic",
+      "text": "\"모터가 운다\" — 목표 각도에 안착하지 못하고 진동하는 현상이다."
+    },
+    {
+      "type": "subheading",
+      "text": "데드밴드 원인 4가지 (p.36)"
+    },
+    {
+      "type": "list",
+      "ordered": true,
+      "items": [
+        {"text": "해상도 한계와 지터(Jitter): PWM 신호 타이밍이 미세하게 흔들림 (예: 목표 1250µs인데 1249↔1251µs를 오감) → 모터도 따라 떨림.", "badge": null},
+        {"text": "물리적 부하: 무거운 물체가 달려 중력에 밀림 → 바로잡기 → 다시 밀림을 반복.", "badge": null},
+        {"text": "전압 불안정: 구동 전류 부족으로 내부 제어 회로가 오작동.", "badge": null},
+        {"text": "기어 유격(백래시): 저가 플라스틱 기어의 틈.", "badge": null}
+      ]
+    },
+    {
+      "type": "subheading",
+      "text": "데드밴드 해결 (p.37)"
+    },
+    {
+      "type": "para",
+      "text": "소프트웨어 대책:"
+    },
+    {
+      "type": "list",
+      "ordered": true,
+      "items": [
+        {"text": "목표 도달 후 myServo.detach()로 신호 차단 (힘이 빠져 떨림이 즉시 소멸, 단 외력에 밀릴 수 있음).", "badge": null},
+        {"text": "1~2도 미만의 미세 변화 명령은 무시(이동 임계값).", "badge": null}
+      ]
+    },
+    {
+      "type": "para",
+      "text": "하드웨어 대책:"
+    },
+    {
+      "type": "list",
+      "ordered": true,
+      "items": [
+        {"text": "별도 전원(2A 이상) + GND 공통 — \"전원만 안정되어도 떨림의 80%는 사라진다\".", "badge": null},
+        {"text": "서보 전원 양단에 평활 전해 커패시터 100µF~1000µF.", "badge": null},
+        {"text": "금속 기어 고성능 서보 사용.", "badge": null}
+      ]
+    },
+    {
+      "type": "callout",
+      "variant": "mic",
+      "text": "교수님 추가: 트랜지스터나 FET 스위칭 회로로 서보 전원 자체를 차단하거나 브레이크를 잡아주는 하드웨어적 방법이 무리 없이 쓸 수 있는 방법이다."
+    },
+    {
+      "type": "code",
+      "code": "myServo.detach(); // 목표 각도 도달 후 신호 차단 → 떨림(데드밴드) 즉시 소멸"
+    }
+  ],
+  "questions": [
+    {
+      "id": "s12-q01",
+      "section": 12,
+      "topic": "servo",
+      "type": "mc",
+      "difficulty": 1,
+      "starred": true,
+      "question": "표준 서보 모터에서 펄스 폭(펄스 길이)이 의미하는 것은 무엇인가?",
+      "choices": [
+        "회전 각도를 결정한다",
+        "회전 속도를 제어한다",
+        "회전 방향만 바꾼다",
+        "전원 전압을 결정한다",
+        "회전 토크를 결정한다"
+      ],
+      "answerIndex": 0,
+      "explanation": "표준 서보는 회전 범위가 제한적(보통 0~180도)이고 펄스 길이가 회전 각도를 결정한다. 반면 연속 회전 서보에서는 펄스 길이가 회전 속도를 제어하므로 둘을 혼동하면 안 된다.",
+      "source": "§12 p.32~37"
+    },
+    {
+      "id": "s12-q02",
+      "section": 12,
+      "topic": "servo",
+      "type": "mc",
+      "difficulty": 2,
+      "starred": false,
+      "question": "연속 회전 서보 모터의 특성으로 옳은 것은?",
+      "choices": [
+        "360도 연속 회전이 가능하며 펄스 길이가 회전 속도를 제어한다",
+        "회전 범위가 0~180도로 제한되고 펄스 길이가 각도를 결정한다",
+        "펄스 길이가 회전 각도를 결정하고 360도 회전한다",
+        "전원선이 2선뿐이다",
+        "펄스 없이 전압만으로 속도를 제어한다"
+      ],
+      "answerIndex": 0,
+      "explanation": "연속 회전 서보는 360도 연속 회전이 가능하고, 펄스 길이가 각도가 아니라 회전 속도를 제어한다. 각도를 결정하는 것은 표준 서보(0~180도)의 특성이다.",
+      "source": "§12 p.32~37"
+    },
+    {
+      "id": "s12-q03",
+      "section": 12,
+      "topic": "servo",
+      "type": "mc",
+      "difficulty": 1,
+      "starred": true,
+      "question": "표준 서보에서 0도에 해당하는 펄스 폭은 얼마인가?",
+      "choices": [
+        "1ms",
+        "1.25ms",
+        "1.5ms",
+        "2ms",
+        "20ms"
+      ],
+      "answerIndex": 0,
+      "explanation": "펄스폭-각도 표(암기 필수)에 따르면 0도=1ms, 45도=1.25ms, 90도=1.5ms, 180도=2ms이다. 20ms는 펄스의 주기(반복 간격)이지 0도의 펄스 폭이 아니다.",
+      "source": "§12 p.32~37"
+    },
+    {
+      "id": "s12-q04",
+      "section": 12,
+      "topic": "servo",
+      "type": "mc",
+      "difficulty": 2,
+      "starred": true,
+      "question": "표준 서보의 펄스 폭이 1.5ms일 때 해당하는 회전 각도는?",
+      "choices": [
+        "90도",
+        "0도",
+        "45도",
+        "180도",
+        "135도"
+      ],
+      "answerIndex": 0,
+      "explanation": "암기 표에 따르면 1.5ms는 90도에 해당한다(0도=1ms, 45도=1.25ms, 90도=1.5ms, 180도=2ms). 중간값인 1.5ms가 정중앙 90도라는 점을 기억하면 된다.",
+      "source": "§12 p.32~37"
+    },
+    {
+      "id": "s12-q05",
+      "section": 12,
+      "topic": "servo",
+      "type": "short",
+      "difficulty": 2,
+      "starred": true,
+      "question": "표준 서보의 펄스 폭이 1.25ms일 때 회전 각도는 몇 도인가?",
+      "answerText": "45도",
+      "acceptable": ["45", "45 도", "45deg", "45°"],
+      "explanation": "암기 표에서 1.25ms는 45도에 해당한다. 0도(1ms)와 90도(1.5ms) 사이 값으로, 표에 명시된 45도 펄스 폭이 1.25ms다.",
+      "source": "§12 p.32~37"
+    },
+    {
+      "id": "s12-q06",
+      "section": 12,
+      "topic": "servo",
+      "type": "mc",
+      "difficulty": 2,
+      "starred": true,
+      "question": "표준 서보가 특정 각도를 유지하려면 펄스를 어떤 주기(간격)와 주파수로 보내야 하는가?",
+      "choices": [
+        "20ms 간격, 1초에 50회(50Hz)",
+        "2ms 간격, 1초에 500회(500Hz)",
+        "20ms 간격, 1초에 20회(20Hz)",
+        "1ms 간격, 1초에 100회(100Hz)",
+        "490ms 간격, 1초에 50회(50Hz)"
+      ],
+      "answerIndex": 0,
+      "explanation": "서보는 펄스를 20ms 간격(주기)으로 1초에 50회, 즉 50Hz로 계속 보내야 그 각도를 유지한다. 50Hz의 주기가 곧 1/50초 = 20ms임을 함께 기억하면 된다.",
+      "source": "§12 p.32~37"
+    },
+    {
+      "id": "s12-q07",
+      "section": 12,
+      "topic": "servo",
+      "type": "ox",
+      "difficulty": 2,
+      "starred": false,
+      "question": "writeMicroseconds(1250)처럼 마이크로초 단위로 제어하는 것이 write(45)보다 더 정밀하여 의료기기·정밀장치에 추천된다.",
+      "choices": ["O (맞다)", "X (틀리다)"],
+      "answerIndex": 0,
+      "explanation": "교수님이 구두로 강조한 내용으로, writeMicroseconds()는 마이크로초 단위 제어가 가능해 write(각도)보다 훨씬 정밀하다. 따라서 의료기기·정밀장치에 추천되며 맞는 설명이다.",
+      "source": "§12 p.32~37"
+    },
+    {
+      "id": "s12-q08",
+      "section": 12,
+      "topic": "servo",
+      "type": "mc",
+      "difficulty": 1,
+      "starred": false,
+      "question": "서보 모터의 3선 배선에서 각 색의 역할이 올바르게 짝지어진 것은?",
+      "choices": [
+        "빨간색 = 전원(+), 검은색/갈색 = GND, 흰색/주황색 = 제어선",
+        "빨간색 = GND, 검은색 = 전원(+), 흰색 = 제어선",
+        "빨간색 = 제어선, 검은색 = 전원(+), 흰색 = GND",
+        "빨간색 = 전원(+), 흰색 = GND, 갈색 = 제어선",
+        "빨간색 = 제어선, 갈색 = 전원(+), 주황색 = GND"
+      ],
+      "answerIndex": 0,
+      "explanation": "서보 3선은 빨간색=전원(+), 검은색·갈색=GND, 흰색·주황색=제어선이다. 전원은 항상 연결하고 제어선으로 위치 신호를 계속 전송한다. 선택지 4는 갈색을 제어선, 흰색을 GND로 잘못 바꿔 놓은 함정이다.",
+      "source": "§12 p.32~37"
+    },
+    {
+      "id": "s12-q09",
+      "section": 12,
+      "topic": "servo",
+      "type": "mc",
+      "difficulty": 2,
+      "starred": false,
+      "question": "서보를 아두이노 5V 핀에 직접 연결하면 안 되는 주된 이유는?",
+      "choices": [
+        "서보는 움직일 때 순간 전류가 커서 직결하면 리셋/오동작을 일으킨다",
+        "서보의 제어선이 5V 핀과 단락되기 때문이다",
+        "서보가 5V보다 높은 전압을 요구하기 때문이다",
+        "5V 핀은 디지털 출력만 지원하기 때문이다",
+        "서보는 항상 9V 전원만 사용하기 때문이다"
+      ],
+      "answerIndex": 0,
+      "explanation": "서보는 움직일 때 순간 전류가 크기 때문에 아두이노 5V 핀에 직결하면 전압이 흔들려 리셋/오동작이 발생한다. 따라서 별도 전원을 쓰고 GND는 반드시 공통으로 연결해야 한다.",
+      "source": "§12 p.32~37"
+    },
+    {
+      "id": "s12-q10",
+      "section": 12,
+      "topic": "servo",
+      "type": "ox",
+      "difficulty": 2,
+      "starred": false,
+      "question": "서보에 별도 전원을 사용할 때, 서보 전원과 아두이노의 GND는 서로 연결하지 않고 분리해야 한다.",
+      "choices": ["O (맞다)", "X (틀리다)"],
+      "answerIndex": 1,
+      "explanation": "전원(+)은 분리하되 GND는 반드시 공통으로 연결해야 한다. GND가 공통이어야 제어 신호의 기준 전위가 일치해 서보가 정상 동작하므로, GND를 분리한다는 설명은 틀렸다.",
+      "source": "§12 p.32~37"
+    },
+    {
+      "id": "s12-q11",
+      "section": 12,
+      "topic": "servo",
+      "type": "short",
+      "difficulty": 2,
+      "starred": false,
+      "question": "Servo.h 라이브러리를 사용하면 PWM(analogWrite) 기능에 제한이 생길 수 있는 핀 번호 2개는?",
+      "answerText": "9번, 10번",
+      "acceptable": ["9, 10", "9번과 10번", "9 10", "9·10", "9와 10", "10번, 9번", "10, 9"],
+      "explanation": "Servo.h를 사용하면 9, 10번 핀의 PWM(analogWrite) 기능에 제한이 발생할 수 있다. 라이브러리가 내부 타이머를 점유하기 때문이며, 핀 배치를 미리 확인해야 한다.",
+      "source": "§12 p.32~37"
+    },
+    {
+      "id": "s12-q12",
+      "section": 12,
+      "topic": "servo",
+      "type": "ox",
+      "difficulty": 1,
+      "starred": true,
+      "question": "데드밴드는 서보가 목표 각도에 안착하지 못하고 \"지잉-\" 하며 진동하는, 이른바 \"모터가 우는\" 현상이다.",
+      "choices": ["O (맞다)", "X (틀리다)"],
+      "answerIndex": 0,
+      "explanation": "데드밴드는 서보가 목표 각도에 안착하지 못하고 떨리는 현상으로, 교수님이 \"모터가 운다\"고 표현하며 강조했다. 맞는 설명이며 출제 예고 구간이다.",
+      "source": "§12 p.32~37"
+    },
+    {
+      "id": "s12-q13",
+      "section": 12,
+      "topic": "servo",
+      "type": "mc",
+      "difficulty": 3,
+      "starred": true,
+      "question": "다음 중 데드밴드(서보 떨림)의 원인 4가지에 포함되지 않는 것은?",
+      "choices": [
+        "기준 전압(ADC reference)이 5V로 고정되어 있음",
+        "해상도 한계와 지터(Jitter) — PWM 타이밍이 미세하게 흔들림",
+        "물리적 부하 — 무거운 물체가 중력에 밀려 바로잡기를 반복",
+        "전압 불안정 — 구동 전류 부족으로 내부 제어 회로 오작동",
+        "기어 유격(백래시) — 저가 플라스틱 기어의 틈"
+      ],
+      "answerIndex": 0,
+      "explanation": "데드밴드 원인 4가지는 ① 해상도 한계와 지터, ② 물리적 부하, ③ 전압 불안정, ④ 기어 유격(백래시)이다. ADC 기준 전압 5V는 데드밴드 원인과 무관한 항목으로, 함정 선택지다.",
+      "source": "§12 p.32~37"
+    },
+    {
+      "id": "s12-q14",
+      "section": 12,
+      "topic": "servo",
+      "type": "mc",
+      "difficulty": 2,
+      "starred": true,
+      "question": "데드밴드 원인 중 \"지터(Jitter)\"를 가장 잘 설명한 것은?",
+      "choices": [
+        "PWM 신호 타이밍이 미세하게 흔들려(예: 목표 1250µs인데 1249↔1251µs를 오감) 모터도 따라 떨리는 것",
+        "무거운 물체가 중력에 밀려 위치가 어긋나는 것",
+        "구동 전류 부족으로 내부 제어 회로가 오작동하는 것",
+        "저가 플라스틱 기어의 틈으로 인한 백래시",
+        "전원선과 제어선이 단락되어 발생하는 떨림"
+      ],
+      "answerIndex": 0,
+      "explanation": "지터는 PWM 신호 타이밍의 미세한 흔들림이다. 예를 들어 목표가 1250µs인데 실제로는 1249µs와 1251µs 사이를 오가면, 그만큼 모터도 미세하게 따라 떨린다. 나머지는 부하·전압·기어 유격 등 다른 원인이다.",
+      "source": "§12 p.32~37"
+    },
+    {
+      "id": "s12-q15",
+      "section": 12,
+      "topic": "servo",
+      "type": "mc",
+      "difficulty": 2,
+      "starred": true,
+      "question": "데드밴드(떨림)에 대한 소프트웨어 해결책으로 올바른 것은?",
+      "choices": [
+        "목표 도달 후 myServo.detach()로 신호를 차단하면 힘이 빠져 떨림이 즉시 사라진다",
+        "myServo.attach()를 반복 호출해 신호를 강화한다",
+        "delay(500)을 넣어 펄스를 느리게 보낸다",
+        "펄스 주기를 20ms에서 2ms로 줄인다",
+        "analogWrite로 0% 듀티를 출력한다"
+      ],
+      "answerIndex": 0,
+      "explanation": "소프트웨어 대책 중 하나는 목표 각도 도달 후 myServo.detach()로 신호를 차단하는 것이다. 신호가 끊기면 힘이 빠져 떨림이 즉시 소멸한다. 단 힘이 없어 외력에 밀릴 수 있다는 단점이 있다. 또 다른 SW 대책은 1~2도 미만 미세 변화 명령을 무시하는 이동 임계값이다.",
+      "source": "§12 p.32~37"
+    },
+    {
+      "id": "s12-q16",
+      "section": 12,
+      "topic": "servo",
+      "type": "mc",
+      "difficulty": 3,
+      "starred": true,
+      "question": "myServo.detach()로 데드밴드를 해결할 때 함께 알아야 할 단점은?",
+      "choices": [
+        "힘(토크)이 빠지므로 외력에 의해 서보 위치가 밀릴 수 있다",
+        "신호를 차단해도 떨림이 전혀 줄지 않는다",
+        "9, 10번 핀의 PWM이 영구히 비활성화된다",
+        "서보가 360도 연속 회전으로 바뀐다",
+        "펄스 주기가 20ms에서 50ms로 늘어난다"
+      ],
+      "answerIndex": 0,
+      "explanation": "detach()는 신호를 차단해 떨림을 즉시 없애지만, 그만큼 서보를 잡아주는 힘(토크)이 빠진다. 따라서 외력이 가해지면 위치가 밀릴 수 있다는 단점이 있다.",
+      "source": "§12 p.32~37"
+    },
+    {
+      "id": "s12-q17",
+      "section": 12,
+      "topic": "servo",
+      "type": "ox",
+      "difficulty": 2,
+      "starred": true,
+      "question": "데드밴드의 하드웨어 해결책으로 \"별도 전원(2A 이상) + GND 공통\"을 쓰면, 전원만 안정되어도 떨림의 약 80%가 사라진다.",
+      "choices": ["O (맞다)", "X (틀리다)"],
+      "answerIndex": 0,
+      "explanation": "하드웨어 대책 중 별도 전원(2A 이상)과 GND 공통 연결이 가장 효과적이며, \"전원만 안정되어도 떨림의 80%는 사라진다\"고 강조되었다. 따라서 맞는 설명이다.",
+      "source": "§12 p.32~37"
+    },
+    {
+      "id": "s12-q18",
+      "section": 12,
+      "topic": "servo",
+      "type": "short",
+      "difficulty": 2,
+      "starred": true,
+      "question": "데드밴드 하드웨어 해결책으로 서보 전원 양단에 다는 평활 전해 커패시터의 권장 용량 범위는?",
+      "answerText": "100µF ~ 1000µF",
+      "acceptable": ["100~1000µF", "100uF~1000uF", "100µF에서 1000µF", "100uF에서 1000uF", "100마이크로패럿~1000마이크로패럿", "100µF-1000µF", "100~1000uF"],
+      "explanation": "전압 변동(리플)을 흡수해 떨림을 줄이기 위해 서보 전원 양단에 100µF~1000µF의 평활 전해 커패시터를 단다. 전원 안정이 데드밴드 해결의 핵심이기 때문이다.",
+      "source": "§12 p.32~37"
+    },
+    {
+      "id": "s12-q19",
+      "section": 12,
+      "topic": "servo",
+      "type": "short",
+      "difficulty": 1,
+      "starred": true,
+      "question": "표준 서보에서 180도에 해당하는 펄스 폭은 몇 ms인가?",
+      "answerText": "2ms",
+      "acceptable": ["2", "2 ms", "2.0ms", "2밀리초", "2 밀리초"],
+      "explanation": "암기 표에서 180도는 2ms에 해당한다(0도=1ms, 45도=1.25ms, 90도=1.5ms, 180도=2ms). 최대 각도가 가장 긴 펄스 폭(2ms)임을 기억하면 된다.",
+      "source": "§12 p.32~37"
+    },
+    {
+      "id": "s12-q20",
+      "section": 12,
+      "topic": "servo",
+      "type": "short",
+      "difficulty": 3,
+      "starred": false,
+      "question": "교수님이 추가로 강조한, 서보 전원 자체를 차단하거나 브레이크를 잡아 떨림을 막는 하드웨어 방법은 어떤 소자/회로를 사용하는가?",
+      "answerText": "트랜지스터나 FET 스위칭 회로",
+      "acceptable": ["트랜지스터/FET 스위칭", "FET 스위칭 회로", "트랜지스터 스위칭", "트랜지스터", "FET", "전계효과 트랜지스터", "MOSFET 스위칭", "트랜지스터나 FET"],
+      "explanation": "교수님 추가 강조 내용으로, 트랜지스터나 FET 스위칭 회로로 서보 전원 자체를 차단하거나 브레이크를 잡아주는 하드웨어적 방법이 무리 없이 쓸 수 있는 방법이라고 설명했다.",
+      "source": "§12 p.32~37"
+    }
+  ]
+}

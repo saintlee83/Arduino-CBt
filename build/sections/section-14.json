@@ -1,0 +1,417 @@
+{
+  "section": 14,
+  "title": "7세그먼트(FND) — ⭐출제 예고",
+  "pages": "p.43~48",
+  "topic": "sevenseg",
+  "notesBlocks": [
+    {
+      "type": "callout",
+      "variant": "star",
+      "text": "교수님 출제 예고 구간(⭐⭐). 커먼 캐소드 7세그먼트에서 F자·2자 등 숫자/문자 패턴을 직접 만들 수 있어야 한다. 클로즈드북이므로 패턴표를 머릿속에 암기할 것."
+    },
+    {
+      "type": "subheading",
+      "text": "기본 구조 (p.43, 45)"
+    },
+    {
+      "type": "list",
+      "ordered": false,
+      "items": [
+        {"text": "LED 8개: 세그먼트 a~g 7개 + 소수점 DP 1개", "badge": null},
+        {"text": "세그먼트 위치: a(위), b(우상), c(우하), d(아래), e(좌하), f(좌상), g(중앙), dp(점)", "badge": null}
+      ]
+    },
+    {
+      "type": "para",
+      "text": "공통핀 + 제어핀 구조 (공통 양극 vs 공통 음극):"
+    },
+    {
+      "type": "table",
+      "headers": ["", "공통 양극(Common Anode)", "공통 음극(Common Cathode)"],
+      "rows": [
+        ["공통핀 연결", "VCC", "GND"],
+        ["세그먼트 점등 조건", "제어핀 LOW", "제어핀 HIGH (직관적)"]
+      ]
+    },
+    {
+      "type": "para",
+      "text": "1자리 핀 배치 (p.45): 위 10=g, 9=f, 8=공통, 7=a, 6=b / 아래 1=e, 2=d, 3=공통, 4=c, 5=dp"
+    },
+    {
+      "type": "callout",
+      "variant": "mic",
+      "text": "시계용 콜론(:)이 있는 제품, ±1 표시용 제품 등도 있음. 보통 1자리~4자리."
+    },
+    {
+      "type": "subheading",
+      "text": "4자리 다이나믹(멀티플렉싱) 구동 (p.44, 46~47)"
+    },
+    {
+      "type": "list",
+      "ordered": false,
+      "items": [
+        {"text": "세그먼트 신호선 A~G·DP는 4자리 모두에 병렬 공통 연결, 자리마다 COM1~COM4 공통핀이 따로 나옴 → 핀 12개(세그먼트 8 + 자리 4)로 4자리×8세그먼트 제어", "badge": null},
+        {"text": "자리마다 따로 연결하면 8핀 × 4자리 = 32핀 필요 → 다이나믹 방식으로 12핀이면 충분 (32 vs 12 비교 암기)", "badge": "mic"},
+        {"text": "잔상 효과: 실제로는 한 번에 한 자리만 켜지지만, COM을 빠르게 순환(스캔)하면 모두 켜진 것처럼 보임. 단 MCU가 계속 스캔에 시간을 소비하는 단점 → 전용 제어 IC 모듈을 쓰면 부담 경감", "badge": null},
+        {"text": "동작: 자리 선택(COM 스위치) + 숫자 패턴(세그먼트) 출력의 조합 — \"이 자리를 켜고 싶으면 그 COM을 활성화하고 패턴을 뿌린다\"", "badge": "mic"},
+        {"text": "4자리 모듈 핀 번호 (p.47): 세그먼트 A=13, B=9, C=4, D=2, E=1, F=12, G=5, DP=3 / COM1=14, COM2=11, COM3=10, COM4=6, 전류 제한 저항 330Ω (세그먼트 쪽에)", "badge": null}
+      ]
+    },
+    {
+      "type": "subheading",
+      "text": "⭐ 숫자 패턴표 (p.48) — Common Cathode, 비트 순서 A B C D E F G DP, HIGH=켜짐"
+    },
+    {
+      "type": "table",
+      "headers": ["숫자", "16진수", "2진수 (ABCDEFG·DP)", "켜지는 세그먼트", "변형"],
+      "rows": [
+        ["0", "0xFC", "1111 1100", "a b c d e f (g, dp만 꺼짐)", ""],
+        ["1", "0x60", "0110 0000", "bc", ""],
+        ["2", "0xDA", "1101 1010", "abdeg", ""],
+        ["3", "0xF2", "1111 0010", "abcdg", ""],
+        ["4", "0x66", "0110 0110", "bcfg", ""],
+        ["5", "0xB6", "1011 0110", "acdfg", ""],
+        ["6", "0xBE", "1011 1110", "acdefg", "a 빼고 0x3E도 6"],
+        ["7", "0xE0", "1110 0000", "abc", "f 켜도 7 (0xE4)"],
+        ["8", "0xFE", "1111 1110", "전부 (dp 제외)", ""],
+        ["9", "0xF6", "1111 0110", "abcdfg", "d 빼고 0xE6도 9"]
+      ]
+    },
+    {
+      "type": "callout",
+      "variant": "mic",
+      "text": "패턴 읽는 요령: \"0은 g와 dp만 0, 나머지 다 1\" / \"1은 b, c만 1\"."
+    },
+    {
+      "type": "callout",
+      "variant": "mic",
+      "text": "6·7·9는 위 꼬리/아래 꼬리를 켜느냐에 따라 변형 패턴이 있다 — 특히 6에서 a를 안 켜면 b(소문자)와 혼동될 수 있어 구분 필요."
+    },
+    {
+      "type": "callout",
+      "variant": "star",
+      "text": "커먼 애노드면 위 패턴을 전부 반전(0↔1) — \"애노드 타입이면 켤 세그먼트가 LOW로 떨어져야 불이 들어온다\"."
+    },
+    {
+      "type": "subheading",
+      "text": "⭐ 문자 패턴 (교수님이 직접 출제 예고: \"F자, A자, 2를 만들려면?\")"
+    },
+    {
+      "type": "para",
+      "text": "교수님 설명 방식: 8(전부 켜짐)에서 빼거나 더해서 만든다."
+    },
+    {
+      "type": "table",
+      "headers": ["문자", "켜지는 세그먼트", "2진수 (ABCDEFG·DP)", "16진수 (공통 음극)", "만드는 법 🎤"],
+      "rows": [
+        ["A", "abcefg", "1110 1110", "0xEE", "8에서 d만 끄면 A"],
+        ["b", "cdefg", "0011 1110", "0x3E", "6에서 a를 뺀 모양"],
+        ["C", "adef", "1001 1100", "0x9C", "위·아래·왼쪽만"],
+        ["d", "bcdeg", "0111 1010", "0x7A", ""],
+        ["E", "adefg", "1001 1110", "0x9E", ""],
+        ["F", "aefg", "1000 1110", "0x8E", "E에서 d를 뺀 모양"]
+      ]
+    },
+    {
+      "type": "list",
+      "ordered": false,
+      "items": [
+        {"text": "연습(교수님 예시): 커먼 캐소드에서 F → a, e, f, g만 HIGH = 1000 1110 (0x8E) / 커먼 애노드라면 반전 = 0111 0001 (0x71)", "badge": "star"},
+        {"text": "2 → a b d e g = 1101 1010 = 0xDA (숫자표와 동일)", "badge": null}
+      ]
+    },
+    {
+      "type": "callout",
+      "variant": "info",
+      "text": "암기 핵심: 비트 순서는 A B C D E F G DP. 공통 음극(Common Cathode)은 HIGH=켜짐, 공통 양극(Common Anode)은 패턴 전부 반전. 4자리 다이나믹 = 12핀(개별 연결이면 32핀), 전류 제한 저항 330Ω."
+    }
+  ],
+  "questions": [
+    {
+      "id": "s14-q01",
+      "section": 14,
+      "topic": "sevenseg",
+      "type": "mc",
+      "difficulty": 1,
+      "starred": false,
+      "question": "7세그먼트(FND) 1자리에는 몇 개의 LED가 들어 있는가?",
+      "choices": ["7개 (세그먼트 a~g만)", "8개 (세그먼트 a~g 7개 + 소수점 DP 1개)", "4개", "12개"],
+      "answerIndex": 1,
+      "explanation": "7세그먼트는 숫자 모양을 만드는 세그먼트 a~g 7개에 소수점(DP) 1개를 더해 총 8개의 LED로 구성된다.",
+      "source": "§14 p.43~48"
+    },
+    {
+      "id": "s14-q02",
+      "section": 14,
+      "topic": "sevenseg",
+      "type": "mc",
+      "difficulty": 1,
+      "starred": false,
+      "question": "세그먼트 위치 표기에서 'g'는 7세그먼트의 어느 위치에 해당하는가?",
+      "choices": ["맨 위(가로)", "중앙(가로)", "우하(세로)", "좌상(세로)"],
+      "answerIndex": 1,
+      "explanation": "세그먼트 위치는 a(위), b(우상), c(우하), d(아래), e(좌하), f(좌상), g(중앙), dp(점)이다. 따라서 g는 중앙 가로 세그먼트다.",
+      "source": "§14 p.43~48"
+    },
+    {
+      "id": "s14-q03",
+      "section": 14,
+      "topic": "sevenseg",
+      "type": "mc",
+      "difficulty": 2,
+      "starred": true,
+      "question": "공통 음극(Common Cathode) 7세그먼트에서 특정 세그먼트를 켜려면 그 제어핀에 무엇을 인가해야 하며, 공통핀은 어디에 연결되는가?",
+      "choices": ["제어핀 LOW / 공통핀 VCC", "제어핀 HIGH / 공통핀 GND", "제어핀 HIGH / 공통핀 VCC", "제어핀 LOW / 공통핀 GND"],
+      "answerIndex": 1,
+      "explanation": "공통 음극형은 공통핀을 GND에 연결하고, 세그먼트를 켜려면 제어핀에 HIGH를 줘야 한다(직관적). 공통 양극형은 공통핀을 VCC에 연결하고 제어핀 LOW로 켠다.",
+      "source": "§14 p.43~48"
+    },
+    {
+      "id": "s14-q04",
+      "section": 14,
+      "topic": "sevenseg",
+      "type": "ox",
+      "difficulty": 2,
+      "starred": true,
+      "question": "공통 양극(Common Anode) 7세그먼트에서는 세그먼트 제어핀을 LOW로 떨어뜨려야 해당 세그먼트에 불이 들어온다.",
+      "choices": ["O (맞다)", "X (틀리다)"],
+      "answerIndex": 0,
+      "explanation": "공통 양극형은 공통핀이 VCC에 연결되므로, 세그먼트 LED의 반대쪽(제어핀)을 LOW로 떨어뜨려 전류가 흐르게 해야 켜진다. \"애노드 타입이면 켤 세그먼트가 LOW로 떨어져야 불이 들어온다\".",
+      "source": "§14 p.43~48"
+    },
+    {
+      "id": "s14-q05",
+      "section": 14,
+      "topic": "sevenseg",
+      "type": "short",
+      "difficulty": 3,
+      "starred": true,
+      "question": "커먼 캐소드 7세그먼트에서 문자 'F'를 표시하려면 비트 순서 A B C D E F G DP 기준 2진수 패턴은 무엇인가? (8비트)",
+      "answerText": "1000 1110",
+      "acceptable": ["1000 1110", "10001110", "0x8E", "8E", "a e f g (HIGH)"],
+      "explanation": "F는 세그먼트 a, e, f, g만 켜진다. A B C D E F G DP 순서로 a=1, b=0, c=0, d=0, e=1, f=1, g=1, dp=0 → 1000 1110 = 0x8E. 교수님이 직접 출제 예고한 핵심 문항이다.",
+      "source": "§14 p.43~48"
+    },
+    {
+      "id": "s14-q06",
+      "section": 14,
+      "topic": "sevenseg",
+      "type": "mc",
+      "difficulty": 3,
+      "starred": true,
+      "question": "커먼 캐소드에서 F가 1000 1110(0x8E)일 때, 같은 F를 커먼 애노드 7세그먼트로 표시하려면 패턴은?",
+      "choices": ["1000 1110 (0x8E)", "0111 0001 (0x71)", "1111 1110 (0xFE)", "0111 0000 (0x70)"],
+      "answerIndex": 1,
+      "explanation": "커먼 애노드는 패턴을 전부 반전(0↔1)한다. 1000 1110을 반전하면 0111 0001 = 0x71이 된다.",
+      "source": "§14 p.43~48"
+    },
+    {
+      "id": "s14-q07",
+      "section": 14,
+      "topic": "sevenseg",
+      "type": "short",
+      "difficulty": 2,
+      "starred": true,
+      "question": "커먼 캐소드 7세그먼트에서 숫자 '2'를 표시할 때 켜지는 세그먼트들을 쓰고, 16진수 패턴을 쓰시오.",
+      "answerText": "a b d e g / 0xDA",
+      "acceptable": ["a b d e g, 0xDA", "abdeg 0xDA", "0xDA", "abdeg", "1101 1010", "a,b,d,e,g 0xDA"],
+      "explanation": "숫자 2는 a, b, d, e, g가 켜진다. A B C D E F G DP 순서로 1101 1010 = 0xDA. 문자 표와도 동일하다.",
+      "source": "§14 p.43~48"
+    },
+    {
+      "id": "s14-q08",
+      "section": 14,
+      "topic": "sevenseg",
+      "type": "mc",
+      "difficulty": 2,
+      "starred": true,
+      "question": "커먼 캐소드 7세그먼트에서 숫자 '0'의 패턴(16진수)으로 옳은 것은? (비트 순서 ABCDEFG·DP)",
+      "choices": ["0xFE (전부 켜짐)", "0xFC (g와 dp만 꺼짐)", "0x60 (b, c만)", "0xF6 (abcdfg)"],
+      "answerIndex": 1,
+      "explanation": "0은 a b c d e f가 켜지고 g와 dp만 꺼진다. 1111 1100 = 0xFC. 0xFE는 8, 0x60은 1, 0xF6은 9다.",
+      "source": "§14 p.43~48"
+    },
+    {
+      "id": "s14-q09",
+      "section": 14,
+      "topic": "sevenseg",
+      "type": "mc",
+      "difficulty": 1,
+      "starred": false,
+      "question": "커먼 캐소드 7세그먼트에서 숫자 '1'을 표시할 때 켜지는 세그먼트는?",
+      "choices": ["a, d만", "b, c만", "f, g만", "a, b, c만"],
+      "answerIndex": 1,
+      "explanation": "숫자 1은 오른쪽 세로 두 개, 즉 b와 c만 켜진다. 0110 0000 = 0x60. 교수님 요령: \"1은 b, c만 1\".",
+      "source": "§14 p.43~48"
+    },
+    {
+      "id": "s14-q10",
+      "section": 14,
+      "topic": "sevenseg",
+      "type": "mc",
+      "difficulty": 2,
+      "starred": true,
+      "question": "커먼 캐소드에서 숫자 '8'의 패턴이 0xFE(1111 1110)인 이유로 가장 옳은 것은?",
+      "choices": ["a~g 7개 세그먼트 전부 켜지고 dp만 꺼지므로", "모든 LED(dp 포함)가 켜지므로", "g만 꺼지므로", "b, c, f, g만 켜지므로"],
+      "answerIndex": 0,
+      "explanation": "8은 세그먼트 a~g 전부(dp 제외)가 켜진다. 1111 1110 = 0xFE. dp까지 모두 켜면 0xFF가 되겠지만 8 표시에는 dp가 빠진다.",
+      "source": "§14 p.43~48"
+    },
+    {
+      "id": "s14-q11",
+      "section": 14,
+      "topic": "sevenseg",
+      "type": "short",
+      "difficulty": 3,
+      "starred": true,
+      "question": "교수님 출제 예고 문자 'A'(커먼 캐소드)는 \"8에서 어느 세그먼트만 끄면\" 만들어지는가?",
+      "answerText": "d만 끈다",
+      "acceptable": ["d", "d만", "세그먼트 d", "d (아래)", "아래 d"],
+      "explanation": "A는 abcefg가 켜진다. 8(abcdefg)에서 아래 세그먼트 d만 끄면 A가 된다. 패턴은 1110 1110 = 0xEE.",
+      "source": "§14 p.43~48"
+    },
+    {
+      "id": "s14-q12",
+      "section": 14,
+      "topic": "sevenseg",
+      "type": "mc",
+      "difficulty": 3,
+      "starred": true,
+      "question": "커먼 캐소드 문자 'b'의 패턴(0x3E, 0011 1110)을 만드는 방법으로 교수님이 설명한 것은?",
+      "choices": ["8에서 a만 빼면 b", "6(acdefg)에서 a를 뺀 모양", "E에서 d를 뺀 모양", "C에서 d를 더한 모양"],
+      "answerIndex": 1,
+      "explanation": "문자 b는 cdefg가 켜진다(0011 1110 = 0x3E). 숫자 6은 acdefg이므로 6에서 a를 빼면 소문자 b 모양이 된다.",
+      "source": "§14 p.43~48"
+    },
+    {
+      "id": "s14-q13",
+      "section": 14,
+      "topic": "sevenseg",
+      "type": "mc",
+      "difficulty": 3,
+      "starred": true,
+      "question": "커먼 캐소드 문자 'F'(0x8E)는 어느 문자에서 어느 세그먼트를 빼서 만들 수 있는가?",
+      "choices": ["E(adefg)에서 d를 뺀 모양", "8에서 b, c를 뺀 모양", "A에서 g를 뺀 모양", "C에서 g를 더한 모양"],
+      "answerIndex": 0,
+      "explanation": "E는 adefg(0x9E), F는 aefg(0x8E)이므로 E에서 아래 세그먼트 d를 빼면 F가 된다.",
+      "source": "§14 p.43~48"
+    },
+    {
+      "id": "s14-q14",
+      "section": 14,
+      "topic": "sevenseg",
+      "type": "mc",
+      "difficulty": 2,
+      "starred": false,
+      "question": "4자리 7세그먼트 다이나믹(멀티플렉싱) 구동에서, 자리마다 모든 세그먼트를 따로 연결하면 필요한 핀 수와, 다이나믹 방식으로 줄였을 때 핀 수를 옳게 짝지은 것은?",
+      "choices": ["32핀 → 12핀", "32핀 → 16핀", "16핀 → 8핀", "12핀 → 8핀"],
+      "answerIndex": 0,
+      "explanation": "개별 연결이면 8세그먼트 × 4자리 = 32핀이 필요하다. 다이나믹 방식은 세그먼트 8핀을 4자리에 공통 연결하고 COM1~COM4 자리선택 4핀을 더해 8 + 4 = 12핀으로 가능하다.",
+      "source": "§14 p.43~48"
+    },
+    {
+      "id": "s14-q15",
+      "section": 14,
+      "topic": "sevenseg",
+      "type": "ox",
+      "difficulty": 2,
+      "starred": false,
+      "question": "4자리 다이나믹 구동에서는 실제로 한 번에 한 자리만 켜지지만, COM을 빠르게 순환(스캔)하면 잔상 효과로 4자리가 모두 켜진 것처럼 보인다.",
+      "choices": ["O (맞다)", "X (틀리다)"],
+      "answerIndex": 0,
+      "explanation": "다이나믹 구동의 핵심은 잔상 효과다. 실제로는 한 자리씩만 점등하지만 COM을 빠르게 순환시키면 사람 눈에는 모두 켜진 것으로 보인다. 단점은 MCU가 계속 스캔에 시간을 소비하는 것이다.",
+      "source": "§14 p.43~48"
+    },
+    {
+      "id": "s14-q16",
+      "section": 14,
+      "topic": "sevenseg",
+      "type": "short",
+      "difficulty": 1,
+      "starred": false,
+      "question": "4자리 7세그먼트 모듈에서 세그먼트 쪽에 다는 전류 제한 저항값은 얼마인가?",
+      "answerText": "330Ω",
+      "acceptable": ["330Ω", "330옴", "330 ohm", "330"],
+      "explanation": "4자리 모듈 연결도(p.47) 기준 전류 제한 저항은 세그먼트 쪽에 330Ω을 사용한다.",
+      "source": "§14 p.43~48"
+    },
+    {
+      "id": "s14-q17",
+      "section": 14,
+      "topic": "sevenseg",
+      "type": "mc",
+      "difficulty": 2,
+      "starred": false,
+      "question": "다이나믹 구동의 동작 방식에 대한 교수님 설명으로 옳은 것은?",
+      "choices": ["모든 자리에 동시에 다른 패턴을 동시 출력한다", "자리 선택(COM 스위치) + 숫자 패턴(세그먼트) 출력의 조합으로, 켤 자리의 COM을 활성화하고 패턴을 뿌린다", "패턴 없이 COM만 순서대로 켠다", "세그먼트선을 자리마다 독립적으로 따로 둔다"],
+      "answerIndex": 1,
+      "explanation": "다이나믹 구동은 '자리 선택(COM 활성화) + 세그먼트 패턴 출력'의 조합이다. 켜고 싶은 자리의 COM을 활성화한 뒤 그 자리에 맞는 세그먼트 패턴을 출력하고, 이를 빠르게 순환한다.",
+      "source": "§14 p.43~48"
+    },
+    {
+      "id": "s14-q18",
+      "section": 14,
+      "topic": "sevenseg",
+      "type": "mc",
+      "difficulty": 3,
+      "starred": false,
+      "question": "숫자 6의 표준 패턴은 0xBE(acdefg)이다. 변형 패턴과 그 주의점으로 옳은 것은?",
+      "choices": ["a를 빼면 0x3E도 6이 되지만, 소문자 b와 혼동될 수 있어 구분이 필요하다", "g를 빼면 0xBA도 6이 되어 더 선명하다", "dp를 켜야만 6으로 인식된다", "f를 빼면 0xBC도 6이며 혼동 없음"],
+      "answerIndex": 0,
+      "explanation": "6은 a를 빼면 0x3E로도 표시 가능하지만, 이는 소문자 b(cdefg)와 같은 모양이라 혼동될 수 있다. 그래서 6에서 a(위 꼬리)를 켜서 구분하는 것이 좋다.",
+      "source": "§14 p.43~48"
+    },
+    {
+      "id": "s14-q19",
+      "section": 14,
+      "topic": "sevenseg",
+      "type": "ox",
+      "difficulty": 3,
+      "starred": false,
+      "question": "숫자 7은 abc(0xE0)가 기본이지만, 좌상 세그먼트 f를 추가로 켜도(0xE4) 7로 표시할 수 있다.",
+      "choices": ["O (맞다)", "X (틀리다)"],
+      "answerIndex": 0,
+      "explanation": "7의 기본 패턴은 abc(0xE0)다. 변형으로 f를 켜도 7로 표시 가능(0xE4)하다고 표에 명시되어 있다.",
+      "source": "§14 p.43~48"
+    },
+    {
+      "id": "s14-q20",
+      "section": 14,
+      "topic": "sevenseg",
+      "type": "mc",
+      "difficulty": 1,
+      "starred": false,
+      "question": "숫자 패턴표의 비트 순서(자릿값 배치)는 무엇인가?",
+      "choices": ["DP G F E D C B A", "A B C D E F G DP", "G F E D C B A DP", "A B C D E F DP G"],
+      "answerIndex": 1,
+      "explanation": "패턴표는 비트 순서 A B C D E F G DP를 사용하며, 공통 음극 기준 HIGH=켜짐이다. 이 순서를 알아야 16진수/2진수 변환이 가능하다.",
+      "source": "§14 p.43~48"
+    },
+    {
+      "id": "s14-q21",
+      "section": 14,
+      "topic": "sevenseg",
+      "type": "short",
+      "difficulty": 2,
+      "starred": false,
+      "question": "교수님 요령에 따르면 숫자 '0'의 패턴은 \"무엇과 무엇만 0(꺼짐)이고 나머지는 다 1(켜짐)\"인가?",
+      "answerText": "g와 dp만 0",
+      "acceptable": ["g와 dp", "g, dp", "g 와 dp만 꺼짐", "g와 dp만 꺼짐", "g/dp"],
+      "explanation": "교수님 요령: \"0은 g와 dp만 0, 나머지 다 1\". 즉 a b c d e f가 켜지고 중앙 g와 소수점 dp만 꺼진다(0xFC).",
+      "source": "§14 p.43~48"
+    },
+    {
+      "id": "s14-q22",
+      "section": 14,
+      "topic": "sevenseg",
+      "type": "mc",
+      "difficulty": 3,
+      "starred": false,
+      "question": "커먼 캐소드 문자 'C'는 adef가 켜진다(0x9C). 같은 C를 커먼 애노드로 표시할 때의 패턴(2진수)은?",
+      "choices": ["1001 1100 (0x9C)", "0110 0011 (0x63)", "0110 0010 (0x62)", "1001 1101 (0x9D)"],
+      "answerIndex": 1,
+      "explanation": "C(커먼 캐소드)는 adef → 1001 1100 = 0x9C. 커먼 애노드는 전부 반전하므로 0110 0011 = 0x63이 된다.",
+      "source": "§14 p.43~48"
+    }
+  ]
+}

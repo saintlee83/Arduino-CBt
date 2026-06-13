@@ -1,0 +1,632 @@
+{
+ "section": 10,
+ "title": "DC 모터와 H-브리지 (L293D/L298)",
+ "pages": "p.20~27,29",
+ "topic": "dcmotor",
+ "notesBlocks": [
+  {
+   "type": "subheading",
+   "text": "H-브리지 개념 (p.20)"
+  },
+  {
+   "type": "list",
+   "ordered": false,
+   "items": [
+    {
+     "text": "DC 모터는 연결선에 극성이 없고, 전원 연결 순서(전류 방향)에 따라 회전 방향이 바뀐다.",
+     "badge": null
+    },
+    {
+     "text": "H-브리지는 4개의 스위치(트랜지스터로 구현)로 구성된다.",
+     "badge": null
+    }
+   ]
+  },
+  {
+   "type": "table",
+   "headers": [
+    "모드",
+    "스위치 상태"
+   ],
+   "rows": [
+    [
+     "정지",
+     "4개 모두 열림"
+    ],
+    [
+     "정방향(전진)",
+     "좌상 + 우하 닫힘"
+    ],
+    [
+     "역방향(후진)",
+     "우상 + 좌하 닫힘"
+    ],
+    [
+     "브레이크",
+     "같은 단의 두 스위치 닫힘 (모터 양단 단락) 🎤"
+    ]
+   ]
+  },
+  {
+   "type": "callout",
+   "variant": "info",
+   "text": "강의 슬라이드 p.20 — H-브리지 4가지 동작 모드 (정지/전진/후진/브레이크, 빨간 선 = 전류 경로)"
+  },
+  {
+   "type": "callout",
+   "variant": "warn",
+   "text": "🎤 ⚠️ 같은 쪽 위·아래 스위치를 동시에 ON하면 전원-그라운드가 그대로 쇼트(단락) — 절대 금지."
+  },
+  {
+   "type": "para",
+   "text": "트랜지스터 구현(p.21): 상단 P채널 FET 2개 + 하단 N채널 FET 2개, 입력 CW/CCW, 각 출력에 플라이백 다이오드(UF4001) 4개로 역기전력 보호."
+  },
+  {
+   "type": "callout",
+   "variant": "info",
+   "text": "강의 슬라이드 p.21 — 트랜지스터(FET)로 구현한 H-브리지 기본 회로"
+  },
+  {
+   "type": "subheading",
+   "text": "L293D (p.22~25) — 소용량, 16핀 DIP"
+  },
+  {
+   "type": "list",
+   "ordered": false,
+   "items": [
+    {
+     "text": "반(half) H-브리지 4개 내장 → 반 브리지 2개로 DC 모터 1개 제어 (모터 2개까지).",
+     "badge": null
+    },
+    {
+     "text": "플라이백 다이오드 내장 → 외부 다이오드 불필요 (🎤 L298은 내장 안 됨 → 외부 다이오드 필요).",
+     "badge": "star"
+    }
+   ]
+  },
+  {
+   "type": "para",
+   "text": "주요 핀:"
+  },
+  {
+   "type": "list",
+   "ordered": false,
+   "items": [
+    {
+     "text": "1,2EN(1번) / 3,4EN(9번): 드라이버 활성화 — 여기에 PWM을 넣어 속도 제어.",
+     "badge": null
+    },
+    {
+     "text": "1A·2A(2,7번) / 3A·4A(10,15번): 방향 제어 입력 (아두이노 데이터 핀).",
+     "badge": null
+    },
+    {
+     "text": "1Y·2Y(3,6번) / 3Y·4Y(11,14번): 출력 (모터 연결).",
+     "badge": null
+    },
+    {
+     "text": "VCC1(16번) = 로직 전원 5V / VCC2(8번) = 모터 전원 (예: 9V).",
+     "badge": null
+    },
+    {
+     "text": "4, 5, 12, 13번: 그라운드 겸 히트싱크.",
+     "badge": null
+    }
+   ]
+  },
+  {
+   "type": "para",
+   "text": "FUNCTION TABLE (드라이버 1채널):"
+  },
+  {
+   "type": "table",
+   "headers": [
+    "INPUT A",
+    "ENABLE",
+    "OUTPUT Y"
+   ],
+   "rows": [
+    [
+     "H",
+     "H",
+     "H"
+    ],
+    [
+     "L",
+     "H",
+     "L"
+    ],
+    [
+     "X (무관)",
+     "L",
+     "Z (고임피던스, off)"
+    ]
+   ]
+  },
+  {
+   "type": "callout",
+   "variant": "info",
+   "text": "강의 슬라이드 p.22 — L293D 핀 배치도(16핀 DIP)와 FUNCTION TABLE"
+  },
+  {
+   "type": "subheading",
+   "text": "H-브리지 사용 규칙 (p.29) — 서술형 대비"
+  },
+  {
+   "type": "list",
+   "ordered": true,
+   "items": [
+    {
+     "text": "EN 핀이 LOW면 모터 제어 불가 (출력 고임피던스).",
+     "badge": null
+    },
+    {
+     "text": "1A·2A에 HIGH/LOW → 한 방향, LOW/HIGH → 반대 방향 회전.",
+     "badge": null
+    },
+    {
+     "text": "1A·2A 모두 LOW → 정지.",
+     "badge": null
+    },
+    {
+     "text": "방향(제어 핀)을 바꾸기 전에 먼저 EN을 LOW로 — 스위칭 중 단락 방지.",
+     "badge": "star"
+    }
+   ]
+  },
+  {
+   "type": "subheading",
+   "text": "가변저항으로 모터 속도+방향 동시 제어 (p.29)"
+  },
+  {
+   "type": "table",
+   "headers": [
+    "가변저항 ADC 값",
+    "모터 동작"
+   ],
+   "rows": [
+    [
+     "0 ~ 462",
+     "역방향 (0에 가까울수록 빠름)"
+    ],
+    [
+     "462 ~ 562 (중심 512)",
+     "정지 (데드밴드 구간)"
+    ],
+    [
+     "562 ~ 1023",
+     "정방향 (1023에 가까울수록 빠름)"
+    ]
+   ]
+  },
+  {
+   "type": "callout",
+   "variant": "info",
+   "text": "강의 슬라이드 p.29 — 가변저항 값에 따른 모터 속도·방향 매핑"
+  },
+  {
+   "type": "subheading",
+   "text": "L298 (p.26~27) — 대용량"
+  },
+  {
+   "type": "list",
+   "ordered": false,
+   "items": [
+    {
+     "text": "하프브리지 4개 (채널 A: In1·In2·EnA → Out1·Out2 / 채널 B: In3·In4·EnB → Out3·Out4).",
+     "badge": null
+    },
+    {
+     "text": "Vs(4번) = 모터 전원 (최대 42V급), Vss(9번) = 로직 전원 5V — 각각 100nF 디커플링.",
+     "badge": null
+    },
+    {
+     "text": "SENSE A/B 핀: 외부 센스 저항을 통해 GND로 — 🎤 이 저항의 전압으로 모터 부하(전류)를 판단할 수 있다.",
+     "badge": "mic"
+    }
+   ]
+  },
+  {
+   "type": "callout",
+   "variant": "mic",
+   "text": "🎤 정리: L293(D) = 소용량(16핀), L298 = 대용량. 속도 제어는 ① EN에 PWM ② IN에 PWM, 두 방법 모두 가능."
+  },
+  {
+   "type": "callout",
+   "variant": "info",
+   "text": "강의 슬라이드 p.26 — L298 내부 블록 다이어그램 (하프브리지 4개, In/En/SENSE 핀)"
+  }
+ ],
+ "questions": [
+  {
+   "id": "s10-q01",
+   "section": 10,
+   "topic": "dcmotor",
+   "type": "mc",
+   "difficulty": 1,
+   "starred": false,
+   "question": "DC 모터의 회전 방향은 무엇에 의해 바뀌는가?",
+   "choices": [
+    "연결선의 극성(빨강/검정)을 맞추는 방향",
+    "전원 연결 순서(전류가 흐르는 방향)",
+    "공급 전압의 크기",
+    "PWM 듀티 사이클의 크기"
+   ],
+   "answerIndex": 1,
+   "explanation": "DC 모터는 연결선에 극성이 없고, 전원을 어느 순서로 연결하느냐(전류 방향)에 따라 회전 방향이 바뀐다. 전압 크기나 듀티 사이클은 속도를 바꿀 뿐 방향은 바꾸지 않는다.",
+   "source": "§10 p.20"
+  },
+  {
+   "id": "s10-q02",
+   "section": 10,
+   "topic": "dcmotor",
+   "type": "mc",
+   "difficulty": 2,
+   "starred": false,
+   "question": "H-브리지에서 '정방향(전진)'을 만들려면 어느 스위치를 닫아야 하는가?",
+   "choices": [
+    "4개 모두",
+    "좌상 + 우하",
+    "우상 + 좌하",
+    "좌상 + 좌하"
+   ],
+   "answerIndex": 1,
+   "explanation": "정방향(전진)은 좌상 + 우하 스위치를 닫는다. 역방향(후진)은 우상 + 좌하이고, 좌상+좌하처럼 같은 단의 두 스위치를 닫으면 브레이크(모터 양단 단락)가 된다.",
+   "source": "§10 p.20"
+  },
+  {
+   "id": "s10-q03",
+   "section": 10,
+   "topic": "dcmotor",
+   "type": "mc",
+   "difficulty": 2,
+   "starred": false,
+   "question": "H-브리지의 '브레이크' 모드에 해당하는 스위치 상태는?",
+   "choices": [
+    "4개 모두 열림",
+    "좌상 + 우하 닫힘",
+    "우상 + 좌하 닫힘",
+    "같은 단의 두 스위치를 닫아 모터 양단을 단락"
+   ],
+   "answerIndex": 3,
+   "explanation": "브레이크는 같은 단(예: 두 하단 또는 두 상단)의 두 스위치를 닫아 모터 양단을 단락시키는 것이다. 4개 모두 열림은 정지, 좌상+우하는 전진, 우상+좌하는 후진이다.",
+   "source": "§10 p.20"
+  },
+  {
+   "id": "s10-q04",
+   "section": 10,
+   "topic": "dcmotor",
+   "type": "ox",
+   "difficulty": 2,
+   "starred": true,
+   "question": "H-브리지에서 같은 쪽(같은 레그)의 위·아래 스위치를 동시에 ON하면 전원과 그라운드가 그대로 쇼트(단락)되므로 절대 금지해야 한다.",
+   "choices": [
+    "O (맞다)",
+    "X (틀리다)"
+   ],
+   "answerIndex": 0,
+   "explanation": "같은 쪽 상단/하단 스위치를 동시에 켜면 VCC와 GND가 직접 연결되어 단락(쇼트)이 발생한다. 교수님이 ⚠️🎤로 강조한 절대 금지 사항이다.",
+   "source": "§10 p.20"
+  },
+  {
+   "id": "s10-q05",
+   "section": 10,
+   "topic": "dcmotor",
+   "type": "mc",
+   "difficulty": 2,
+   "starred": false,
+   "question": "트랜지스터(FET)로 구현한 H-브리지 기본 회로(p.21)의 구성으로 옳은 것은?",
+   "choices": [
+    "상단 N채널 FET 2개 + 하단 P채널 FET 2개",
+    "상단 P채널 FET 2개 + 하단 N채널 FET 2개",
+    "P채널 FET 4개만 사용",
+    "N채널 FET 4개와 다이오드 없이 구성"
+   ],
+   "answerIndex": 1,
+   "explanation": "p.21 회로는 상단에 P채널 FET 2개, 하단에 N채널 FET 2개를 두고, 입력은 CW/CCW, 각 출력에는 플라이백 다이오드(UF4001) 4개로 역기전력을 보호한다.",
+   "source": "§10 p.21"
+  },
+  {
+   "id": "s10-q06",
+   "section": 10,
+   "topic": "dcmotor",
+   "type": "short",
+   "difficulty": 1,
+   "starred": false,
+   "question": "트랜지스터로 구현한 H-브리지(p.21)에서 모터 출력 각각에 달아 역기전력을 보호하는 부품의 이름은?",
+   "answerText": "플라이백 다이오드",
+   "acceptable": [
+    "플라이백 다이오드",
+    "flyback diode",
+    "역기전력 보호 다이오드",
+    "UF4001",
+    "환류 다이오드"
+   ],
+   "source": "§10 p.21",
+   "explanation": "트랜지스터로 구현한 H-브리지(p.21)는 각 출력에 플라이백 다이오드(UF4001) 4개를 달아 모터 코일의 역기전력으로부터 회로를 보호한다."
+  },
+  {
+   "id": "s10-q07",
+   "section": 10,
+   "topic": "dcmotor",
+   "type": "mc",
+   "difficulty": 1,
+   "starred": false,
+   "question": "L293D에 대한 설명으로 옳은 것은?",
+   "choices": [
+    "대용량용이며 24핀 패키지이다",
+    "소용량용 16핀 DIP이며 반 H-브리지 4개를 내장한다",
+    "풀 H-브리지 1개만 내장하여 모터 1개만 제어한다",
+    "플라이백 다이오드가 내장되어 있지 않다"
+   ],
+   "answerIndex": 1,
+   "explanation": "L293D는 소용량용 16핀 DIP로 반(half) H-브리지 4개를 내장하여, 반 브리지 2개로 DC 모터 1개씩, 최대 2개까지 제어한다. 플라이백 다이오드는 내장되어 있다.",
+   "source": "§10 p.22~25"
+  },
+  {
+   "id": "s10-q08",
+   "section": 10,
+   "topic": "dcmotor",
+   "type": "ox",
+   "difficulty": 2,
+   "starred": true,
+   "question": "L293D는 플라이백 다이오드가 내장되어 외부 다이오드가 필요 없지만, L298은 플라이백 다이오드가 내장되어 있지 않아 외부 다이오드가 필요하다.",
+   "choices": [
+    "O (맞다)",
+    "X (틀리다)"
+   ],
+   "answerIndex": 0,
+   "explanation": "⭐ 출제예고 포인트. L293D는 플라이백 다이오드 내장이라 외부 다이오드가 불필요하지만, L298은 내장이 안 되어 있어 외부 플라이백 다이오드를 따로 달아야 한다.",
+   "source": "§10 p.22~25"
+  },
+  {
+   "id": "s10-q09",
+   "section": 10,
+   "topic": "dcmotor",
+   "type": "mc",
+   "difficulty": 2,
+   "starred": false,
+   "question": "L293D에서 드라이버를 활성화하고 여기에 PWM을 넣어 모터 속도를 제어하는 핀은?",
+   "choices": [
+    "1A·2A(2,7번) 방향 제어 입력 핀",
+    "1,2EN(1번) / 3,4EN(9번) 인에이블 핀",
+    "1Y·2Y(3,6번) 출력 핀",
+    "VCC2(8번) 모터 전원 핀"
+   ],
+   "answerIndex": 1,
+   "explanation": "EN(인에이블) 핀(1,2EN=1번, 3,4EN=9번)이 드라이버를 활성화하며, 여기에 PWM을 인가하여 속도를 제어한다. 1A·2A는 방향 입력, 1Y·2Y는 모터 출력이다.",
+   "source": "§10 p.22~25"
+  },
+  {
+   "id": "s10-q10",
+   "section": 10,
+   "topic": "dcmotor",
+   "type": "mc",
+   "difficulty": 2,
+   "starred": false,
+   "question": "L293D에서 VCC1(16번)과 VCC2(8번)의 역할로 옳은 것은?",
+   "choices": [
+    "VCC1 = 모터 전원, VCC2 = 로직 전원 5V",
+    "VCC1 = 로직 전원 5V, VCC2 = 모터 전원(예: 9V)",
+    "둘 다 5V 로직 전원",
+    "둘 다 모터 전원"
+   ],
+   "answerIndex": 1,
+   "explanation": "VCC1(16번)은 로직 전원 5V, VCC2(8번)은 모터 전원(예: 9V)이다. 로직과 모터 전원을 분리해 공급한다.",
+   "source": "§10 p.22~25"
+  },
+  {
+   "id": "s10-q11",
+   "section": 10,
+   "topic": "dcmotor",
+   "type": "mc",
+   "difficulty": 3,
+   "starred": false,
+   "question": "L293D FUNCTION TABLE에서 INPUT A=L, ENABLE=H일 때 OUTPUT Y는?",
+   "choices": [
+    "H",
+    "L",
+    "Z (고임피던스, off)",
+    "입력에 무관하게 H"
+   ],
+   "answerIndex": 1,
+   "explanation": "ENABLE이 H인 동안에는 OUTPUT Y가 INPUT A를 따라간다. A=H이면 Y=H, A=L이면 Y=L. ENABLE이 L일 때만 입력과 무관하게 Y=Z(고임피던스)가 된다.",
+   "source": "§10 p.22~25"
+  },
+  {
+   "id": "s10-q12",
+   "section": 10,
+   "topic": "dcmotor",
+   "type": "mc",
+   "difficulty": 2,
+   "starred": false,
+   "question": "L293D FUNCTION TABLE에서 OUTPUT Y가 Z(고임피던스, off) 상태가 되는 조건은?",
+   "choices": [
+    "INPUT A=H, ENABLE=H",
+    "INPUT A=L, ENABLE=H",
+    "ENABLE=L (INPUT A 무관)",
+    "INPUT A=H, ENABLE=L 일 때만"
+   ],
+   "answerIndex": 2,
+   "explanation": "ENABLE=L이면 INPUT A 값(X, 무관)과 상관없이 OUTPUT Y는 Z(고임피던스, off)가 된다. 즉 EN이 LOW면 출력이 끊겨 모터 제어가 불가능하다.",
+   "source": "§10 p.22~25"
+  },
+  {
+   "id": "s10-q13",
+   "section": 10,
+   "topic": "dcmotor",
+   "type": "ox",
+   "difficulty": 1,
+   "starred": false,
+   "question": "H-브리지 사용 규칙(p.29)에 따르면, 1A와 2A를 모두 LOW로 두면 모터는 정지한다.",
+   "choices": [
+    "O (맞다)",
+    "X (틀리다)"
+   ],
+   "answerIndex": 0,
+   "explanation": "1A·2A에 HIGH/LOW면 한 방향, LOW/HIGH면 반대 방향으로 돌고, 둘 다 LOW이면 모터가 정지한다.",
+   "source": "§10 p.29"
+  },
+  {
+   "id": "s10-q14",
+   "section": 10,
+   "topic": "dcmotor",
+   "type": "short",
+   "difficulty": 3,
+   "starred": true,
+   "question": "H-브리지에서 회전 방향(제어 핀)을 바꾸기 직전에 먼저 어떤 핀을 LOW로 만들어야 하며, 그 이유는 무엇인가?",
+   "answerText": "EN(인에이블) 핀을 먼저 LOW로 만든다 — 스위칭 도중 단락(쇼트)을 방지하기 위해",
+   "acceptable": [
+    "EN을 LOW로, 단락 방지",
+    "인에이블 핀 LOW, 쇼트 방지",
+    "EN LOW 후 방향 변경, 스위칭 중 단락 방지",
+    "EN을 LOW로 두어 단락을 막는다"
+   ],
+   "source": "§10 p.29",
+   "explanation": "방향(1A·2A 제어 핀)을 바꾸기 전에 먼저 EN을 LOW로 두어 출력을 끊어야, 스위칭 도중 같은 단의 위·아래 스위치가 겹쳐 켜져 생기는 전원-GND 단락(쇼트)을 막을 수 있다. (p.29 ⭐)"
+  },
+  {
+   "id": "s10-q15",
+   "section": 10,
+   "topic": "dcmotor",
+   "type": "mc",
+   "difficulty": 3,
+   "starred": false,
+   "question": "가변저항으로 모터 속도+방향을 동시 제어할 때(p.29), ADC 값 462~562 구간의 의미는?",
+   "choices": [
+    "역방향 최고속 구간",
+    "정방향 최고속 구간",
+    "정지(데드밴드) 구간, 중심 512",
+    "PWM 오버플로우가 발생하는 구간"
+   ],
+   "answerIndex": 2,
+   "explanation": "462~562(중심 512)는 정지하는 데드밴드 구간이다. 0~462는 역방향(0에 가까울수록 빠름), 562~1023은 정방향(1023에 가까울수록 빠름)이다.",
+   "source": "§10 p.29"
+  },
+  {
+   "id": "s10-q16",
+   "section": 10,
+   "topic": "dcmotor",
+   "type": "mc",
+   "difficulty": 2,
+   "starred": false,
+   "question": "가변저항 ADC 값에 따른 모터 동작 매핑(p.29)에서 ADC 값이 0에 가까울 때의 동작은?",
+   "choices": [
+    "정방향으로 가장 빠르게",
+    "역방향으로 가장 빠르게",
+    "정지",
+    "브레이크 후 역방향"
+   ],
+   "answerIndex": 1,
+   "explanation": "0~462가 역방향 구간이며, 0에 가까울수록 역방향으로 더 빠르게 돈다. 반대로 1023에 가까울수록 정방향으로 가장 빠르다.",
+   "source": "§10 p.29"
+  },
+  {
+   "id": "s10-q17",
+   "section": 10,
+   "topic": "dcmotor",
+   "type": "mc",
+   "difficulty": 1,
+   "starred": false,
+   "question": "대용량 모터 드라이버 L298에 대한 설명으로 옳은 것은?",
+   "choices": [
+    "반 H-브리지 2개만 내장한다",
+    "하프브리지 4개를 내장하고 Vs는 최대 42V급 모터 전원을 받는다",
+    "Vss(9번)가 모터 전원이고 Vs(4번)가 로직 전원이다",
+    "플라이백 다이오드가 내장되어 외부 다이오드가 불필요하다"
+   ],
+   "answerIndex": 1,
+   "explanation": "L298은 하프브리지 4개를 내장한 대용량 드라이버로, Vs(4번)가 모터 전원(최대 42V급), Vss(9번)가 로직 전원 5V이다. 플라이백 다이오드는 미내장이라 외부 다이오드가 필요하다.",
+   "source": "§10 p.26~27"
+  },
+  {
+   "id": "s10-q18",
+   "section": 10,
+   "topic": "dcmotor",
+   "type": "short",
+   "difficulty": 2,
+   "starred": false,
+   "question": "L298의 SENSE A/B 핀에 외부 센스 저항을 GND로 연결하면 그 저항의 전압으로 무엇을 판단할 수 있는가?",
+   "answerText": "모터의 부하(흐르는 전류)",
+   "acceptable": [
+    "모터 부하",
+    "모터 전류",
+    "모터에 흐르는 전류",
+    "부하(전류)",
+    "모터 부하 전류"
+   ],
+   "source": "§10 p.26~27",
+   "explanation": "L298의 SENSE A/B 핀은 외부 센스 저항을 통해 GND로 연결되며, 그 저항 양단 전압으로 모터에 흐르는 전류(부하)를 판단할 수 있다. (🎤)"
+  },
+  {
+   "id": "s10-q19",
+   "section": 10,
+   "topic": "dcmotor",
+   "type": "mc",
+   "difficulty": 2,
+   "starred": false,
+   "question": "🎤 교수님 정리에 따르면, H-브리지로 모터 속도를 제어하는 두 가지 방법으로 옳은 것은?",
+   "choices": [
+    "VCC에 PWM, GND에 PWM",
+    "EN 핀에 PWM, IN(방향) 핀에 PWM — 두 방법 모두 가능",
+    "EN 핀에만 PWM 가능하고 IN에는 불가",
+    "센스 저항 값을 바꿔서만 가능"
+   ],
+   "answerIndex": 1,
+   "explanation": "교수님 정리: 속도 제어는 ① EN 핀에 PWM을 넣는 방법, ② IN(방향 입력) 핀에 PWM을 넣는 방법 두 가지 모두 가능하다.",
+   "source": "§10 p.26~27"
+  },
+  {
+   "id": "s10-q20",
+   "section": 10,
+   "topic": "dcmotor",
+   "type": "ox",
+   "difficulty": 2,
+   "starred": false,
+   "question": "L293(D)는 소용량(16핀), L298은 대용량 드라이버라는 점이 두 IC의 용량상 차이이다.",
+   "choices": [
+    "O (맞다)",
+    "X (틀리다)"
+   ],
+   "answerIndex": 0,
+   "explanation": "🎤 교수님 정리: L293(D)는 소용량(16핀 DIP), L298은 대용량 드라이버다. 또 다른 차이는 플라이백 다이오드 내장 여부(L293D 내장 / L298 미내장)이다.",
+   "source": "§10 p.26~27"
+  },
+  {
+   "id": "s10-q21",
+   "section": 10,
+   "topic": "dcmotor",
+   "type": "short",
+   "difficulty": 1,
+   "starred": false,
+   "question": "L298에서 Vs(4번)과 Vss(9번) 각각의 디커플링 커패시터 값은 얼마인가?",
+   "answerText": "각각 100nF",
+   "acceptable": [
+    "100nF",
+    "100nF 디커플링",
+    "0.1µF",
+    "100 나노패럿"
+   ],
+   "source": "§10 p.26~27",
+   "explanation": "L298은 Vs(4번, 모터 전원)와 Vss(9번, 로직 전원) 각각에 100nF 디커플링 커패시터를 달아 전압 변동을 억제한다."
+  },
+  {
+   "id": "s10-q22",
+   "section": 10,
+   "topic": "dcmotor",
+   "type": "mc",
+   "difficulty": 3,
+   "starred": false,
+   "question": "L293D 핀 배치에서 방향 제어 입력(아두이노 데이터 핀)에 해당하는 핀 번호 묶음으로 옳은 것은?",
+   "choices": [
+    "1A·2A(2,7번) / 3A·4A(10,15번)",
+    "1Y·2Y(3,6번) / 3Y·4Y(11,14번)",
+    "1,2EN(1번) / 3,4EN(9번)",
+    "4, 5, 12, 13번"
+   ],
+   "answerIndex": 0,
+   "explanation": "방향 제어 입력은 1A·2A(2,7번)과 3A·4A(10,15번)이다. 1Y·2Y(3,6번)는 모터 출력, EN(1,9번)은 활성화, 4/5/12/13번은 그라운드 겸 히트싱크이다.",
+   "source": "§10 p.22~25"
+  }
+ ]
+}

@@ -1,0 +1,145 @@
+{
+  "section": 1,
+  "title": "핀 번호 선언 3가지 방식",
+  "pages": "p.2~3",
+  "topic": "pin",
+  "notesBlocks": [
+    {
+      "type": "subheading",
+      "text": "핀 번호 선언 3가지 방식 (p.2~3)"
+    },
+    {
+      "type": "para",
+      "text": "아두이노에서 핀 번호를 선언하는 방법은 크게 3가지가 있다: int 변수, const int 상수, #define 매크로. 각 방식은 값 수정 가능 여부, 메모리 사용, 추천 용도에서 차이가 있다."
+    },
+    {
+      "type": "table",
+      "headers": ["구분", "int led = 9;", "const int led = 9;", "#define led 9"],
+      "rows": [
+        ["수정 가능 여부", "가능 (버그 위험)", "불가능 (안전)", "불가능 (안전)"],
+        ["메모리 사용", "RAM 사용", "최적화됨", "사용 안 함"],
+        ["추천 용도", "값이 변할 때", "핀 번호 설정 (강추)", "아주 적은 메모리 환경"]
+      ]
+    },
+    {
+      "type": "list",
+      "ordered": false,
+      "items": [
+        {"text": "#define 은 컴파일 전 텍스트 치환 방식 → 끝에 세미콜론(;)을 붙이지 않음, 데이터 타입이 없어 연산 오류·디버깅 어려움 가능", "badge": null},
+        {"text": "const int 는 타입 정보가 있어 컴파일러가 체크해줌 → 현대적 코딩에서 가장 추천", "badge": null}
+      ]
+    },
+    {
+      "type": "callout",
+      "variant": "info",
+      "text": "const int 는 핀 번호 설정에 강추되는 방식이다. 타입 정보가 있어 컴파일러가 체크해주므로 현대적 코딩에서 가장 추천된다."
+    },
+    {
+      "type": "callout",
+      "variant": "warn",
+      "text": "#define 은 컴파일 전 텍스트 치환이므로 끝에 세미콜론(;)을 붙이지 않는다. 데이터 타입이 없어 연산 오류나 디버깅이 어려울 수 있다."
+    },
+    {
+      "type": "code",
+      "code": "int led = 9;          // 수정 가능 (버그 위험), RAM 사용\nconst int led = 9;    // 수정 불가능 (안전), 최적화됨, 핀 번호 설정 강추\n#define led 9         // 수정 불가능 (안전), 메모리 사용 안 함, 세미콜론 없음"
+    }
+  ],
+  "questions": [
+    {
+      "id": "s1-q01",
+      "section": 1,
+      "topic": "pin",
+      "type": "mc",
+      "difficulty": 2,
+      "starred": false,
+      "question": "아두이노에서 핀 번호를 설정할 때 가장 추천(강추)되는 선언 방식은 무엇인가?",
+      "choices": [
+        "int led = 9;",
+        "const int led = 9;",
+        "#define led 9",
+        "char led = 9;",
+        "volatile int led = 9;"
+      ],
+      "answerIndex": 1,
+      "explanation": "const int 는 타입 정보가 있어 컴파일러가 체크해주고 메모리도 최적화되므로 핀 번호 설정에 '강추'되며 현대적 코딩에서 가장 추천된다(원문 표: 추천 용도 = 핀 번호 설정(강추)). int 는 수정 가능해 버그 위험이 있고, #define 은 타입이 없어 연산 오류·디버깅이 어렵다.",
+      "source": "§1 p.2~3"
+    },
+    {
+      "id": "s1-q02",
+      "section": 1,
+      "topic": "pin",
+      "type": "mc",
+      "difficulty": 2,
+      "starred": false,
+      "question": "다음 중 #define 매크로 방식에 대한 설명으로 옳은 것은?",
+      "choices": [
+        "RAM을 사용하여 핀 번호를 저장한다",
+        "컴파일 전 텍스트 치환 방식이며 끝에 세미콜론(;)을 붙이지 않는다",
+        "데이터 타입이 있어 컴파일러가 연산 오류를 잡아준다",
+        "실행 중 값을 자유롭게 수정할 수 있다",
+        "타입 정보가 있어 디버깅이 가장 쉽다"
+      ],
+      "answerIndex": 1,
+      "explanation": "#define 은 컴파일 전 텍스트 치환 방식이므로 끝에 세미콜론을 붙이지 않으며, 메모리를 사용하지 않는다(원문: 사용 안 함). 데이터 타입이 없어 오히려 연산 오류·디버깅이 어려울 수 있고 값은 수정 불가능하다.",
+      "source": "§1 p.2~3"
+    },
+    {
+      "id": "s1-q03",
+      "section": 1,
+      "topic": "pin",
+      "type": "mc",
+      "difficulty": 2,
+      "starred": false,
+      "question": "세 가지 핀 번호 선언 방식의 메모리 사용에 대한 설명으로 옳게 짝지어진 것은?",
+      "choices": [
+        "int → 최적화됨 / const int → RAM 사용 / #define → 사용 안 함",
+        "int → RAM 사용 / const int → 최적화됨 / #define → 사용 안 함",
+        "int → 사용 안 함 / const int → RAM 사용 / #define → 최적화됨",
+        "int → RAM 사용 / const int → 사용 안 함 / #define → 최적화됨",
+        "세 방식 모두 RAM을 동일하게 사용한다"
+      ],
+      "answerIndex": 1,
+      "explanation": "원문 표에 따르면 int 는 RAM 을 사용하고, const int 는 최적화되며, #define 은 메모리를 사용하지 않는다. 따라서 메모리가 아주 적은 환경에서는 #define 이 적합하다.",
+      "source": "§1 p.2~3"
+    },
+    {
+      "id": "s1-q04",
+      "section": 1,
+      "topic": "pin",
+      "type": "ox",
+      "difficulty": 1,
+      "starred": false,
+      "question": "int led = 9; 방식은 값을 수정할 수 있어 버그 위험이 있고, 추천 용도는 '값이 변할 때'이다.",
+      "choices": ["O (맞다)", "X (틀리다)"],
+      "answerIndex": 0,
+      "explanation": "원문 표대로 int 방식은 수정 가능(가능, 버그 위험)하며 추천 용도가 '값이 변할 때'이다. 핀 번호처럼 고정된 값에는 const int 가 더 안전하다.",
+      "source": "§1 p.2~3"
+    },
+    {
+      "id": "s1-q05",
+      "section": 1,
+      "topic": "pin",
+      "type": "ox",
+      "difficulty": 2,
+      "starred": false,
+      "question": "#define led 9 는 매크로이지만 일반 변수 선언처럼 반드시 끝에 세미콜론(;)을 붙여야 정상 동작한다.",
+      "choices": ["O (맞다)", "X (틀리다)"],
+      "answerIndex": 1,
+      "explanation": "거짓. #define 은 컴파일 전 텍스트 치환 방식이므로 끝에 세미콜론을 붙이지 않는다. 세미콜론을 붙이면 치환 시 함께 코드에 들어가 오류를 일으킬 수 있다.",
+      "source": "§1 p.2~3"
+    },
+    {
+      "id": "s1-q06",
+      "section": 1,
+      "topic": "pin",
+      "type": "short",
+      "difficulty": 2,
+      "starred": false,
+      "question": "아주 적은(매우 제한된) 메모리 환경에서 핀 번호 선언에 추천되는 방식은 무엇인가? (선언 키워드/문법으로 답하라)",
+      "answerText": "#define",
+      "acceptable": ["#define", "#define led 9", "디파인", "define", "매크로", "#define 매크로"],
+      "explanation": "#define 은 메모리 사용이 '사용 안 함'이며, 원문 표의 추천 용도가 '아주 적은 메모리 환경'이다. 컴파일 전 텍스트 치환이라 RAM을 차지하지 않기 때문이다.",
+      "source": "§1 p.2~3"
+    }
+  ]
+}

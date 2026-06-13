@@ -1,0 +1,283 @@
+{
+  "section": 4,
+  "title": "스위치 바운싱과 디바운싱",
+  "pages": "p.9~10",
+  "topic": "debounce",
+  "notesBlocks": [
+    {
+      "type": "subheading",
+      "text": "바운싱(채터링)"
+    },
+    {
+      "type": "para",
+      "text": "버튼 내부 스프링(기계 접점) 때문에, 누르는 순간 HIGH↔LOW 사이를 여러 번 진동한다. 그 결과 한 번 눌렀는데도 여러 번 누른 것으로 인식된다."
+    },
+    {
+      "type": "list",
+      "ordered": false,
+      "items": [
+        { "text": "바운싱(채터링)의 원인: 버튼 내부 스프링(기계 접점) → 누르는 순간 HIGH↔LOW 사이를 여러 번 진동", "badge": null },
+        { "text": "결과: 한 번 눌렀는데 여러 번 누른 것으로 인식됨", "badge": null },
+        { "text": "오래 사용할수록 접점 마모로 채터링이 심해진다", "badge": "mic" },
+        { "text": "토글형 스위치는 결국 한 위치에 정착하므로 문제가 덜하다", "badge": "mic" },
+        { "text": "택트(푸시) 스위치는 마지막에 LOW에서 끝나버리면 \"안 눌린 것\"으로 오판될 수 있어 대책이 필수", "badge": "mic" }
+      ]
+    },
+    {
+      "type": "callout",
+      "variant": "info",
+      "text": "강의 슬라이드 p.9 — 바운싱 없는 입력 vs 바운싱 있는 입력 파형 비교"
+    },
+    {
+      "type": "subheading",
+      "text": "디바운싱 대책"
+    },
+    {
+      "type": "para",
+      "text": "디바운싱 대책은 하드웨어적 방법과 소프트웨어적 방법으로 나뉜다."
+    },
+    {
+      "type": "callout",
+      "variant": "mic",
+      "text": "하드웨어적 대책: 저항 + 커패시터(RC 회로)로 진동을 흡수한다 (슬라이드에는 소프트웨어 방법만 있음)"
+    },
+    {
+      "type": "para",
+      "text": "소프트웨어적 대책 (p.10 알고리즘, 7단계):"
+    },
+    {
+      "type": "list",
+      "ordered": true,
+      "items": [
+        { "text": "이전/현재 버튼 상태 저장 (초깃값 LOW)", "badge": null },
+        { "text": "현재 상태 읽기", "badge": null },
+        { "text": "이전과 다르면(상태 변화) → 5ms 대기", "badge": null },
+        { "text": "5ms 후 다시 읽어 현재 상태로 저장", "badge": null },
+        { "text": "이전=LOW & 현재=HIGH이면 LED 반전", "badge": null },
+        { "text": "이전 상태 ← 현재 상태", "badge": null },
+        { "text": "2번부터 반복", "badge": null }
+      ]
+    },
+    {
+      "type": "callout",
+      "variant": "mic",
+      "text": "핵심 개념: \"한 번 읽고, 상태가 변했으면 시간 차를 두고 다시 읽는다\" — 바운싱은 수 ms~16ms 정도면 안정되므로 그 후 재확인한다"
+    },
+    {
+      "type": "callout",
+      "variant": "mic",
+      "text": "하드웨어 + 소프트웨어 대책을 동시에 세우는 것이 가장 바람직하다"
+    },
+    {
+      "type": "callout",
+      "variant": "info",
+      "text": "최종 암기 카드: 디바운싱 대기 = 5ms 후 재확인"
+    }
+  ],
+  "questions": [
+    {
+      "id": "s4-q01",
+      "section": 4,
+      "topic": "debounce",
+      "type": "mc",
+      "difficulty": 1,
+      "starred": false,
+      "question": "스위치 바운싱(채터링)이 발생하는 근본 원인으로 가장 적절한 것은?",
+      "choices": [
+        "버튼 내부 스프링(기계 접점) 때문에 누르는 순간 HIGH↔LOW 사이를 여러 번 진동하기 때문",
+        "풀업 저항값이 너무 커서 입력이 플로팅되기 때문",
+        "MCU 내부 타이머의 분주비가 변하기 때문",
+        "ADC 해상도가 낮아 신호의 스파이크를 놓치기 때문"
+      ],
+      "answerIndex": 0,
+      "explanation": "바운싱은 버튼 내부의 스프링(기계 접점)이 닫히는 순간 접점이 튕기며 HIGH↔LOW 사이를 여러 번 진동하기 때문에 발생한다. 그 결과 한 번 눌렀는데도 여러 번 누른 것으로 인식된다. 분주비(§2 PWM)나 ADC 해상도(§6)는 디바운싱과 무관한 다른 절의 개념이다.",
+      "source": "§4 p.9~10"
+    },
+    {
+      "id": "s4-q02",
+      "section": 4,
+      "topic": "debounce",
+      "type": "mc",
+      "difficulty": 2,
+      "starred": false,
+      "question": "바운싱이 일어나면 시스템에서 실제로 나타나는 증상은?",
+      "choices": [
+        "한 번 눌렀는데 여러 번 누른 것으로 인식된다",
+        "버튼을 눌러도 전혀 인식되지 않는다",
+        "입력 핀이 영구적으로 손상된다",
+        "LED 밝기가 듀티 사이클에 비례해 변한다"
+      ],
+      "answerIndex": 0,
+      "explanation": "접점이 누르는 순간 HIGH↔LOW를 여러 번 진동하므로, MCU는 이를 여러 번의 입력 변화로 읽어 한 번의 누름을 여러 번 누른 것으로 인식한다. 핀 손상이나 밝기 변화(§2 듀티 사이클)와는 관련이 없다.",
+      "source": "§4 p.9~10"
+    },
+    {
+      "id": "s4-q03",
+      "section": 4,
+      "topic": "debounce",
+      "type": "ox",
+      "difficulty": 1,
+      "starred": false,
+      "question": "스위치는 오래 사용할수록 접점 마모로 채터링이 심해진다.",
+      "choices": ["O (맞다)", "X (틀리다)"],
+      "answerIndex": 0,
+      "explanation": "교수님이 구두로 강조한 내용(🎤)으로, 오래 사용할수록 접점이 마모되어 채터링(바운싱)이 더 심해진다. 따라서 디바운싱 대책의 중요성이 커진다.",
+      "source": "§4 p.9~10"
+    },
+    {
+      "id": "s4-q04",
+      "section": 4,
+      "topic": "debounce",
+      "type": "ox",
+      "difficulty": 2,
+      "starred": false,
+      "question": "택트(푸시) 스위치는 마지막에 HIGH에서 끝나버리면 \"안 눌린 것\"으로 오판될 수 있어 대책이 필수다.",
+      "choices": ["O (맞다)", "X (틀리다)"],
+      "answerIndex": 1,
+      "explanation": "원문은 택트(푸시) 스위치가 진동 끝에 '마지막에 LOW에서 끝나버리면' 안 눌린 것으로 오판될 수 있다고 했다. 따라서 'HIGH에서 끝나면'이라는 진술은 LOW↔HIGH가 뒤바뀌어 틀렸다. (반대로 토글형은 한 위치에 정착하므로 문제가 덜하다.)",
+      "source": "§4 p.9~10"
+    },
+    {
+      "id": "s4-q05",
+      "section": 4,
+      "topic": "debounce",
+      "type": "mc",
+      "difficulty": 2,
+      "starred": false,
+      "question": "바운싱 문제와 관련하여 토글형 스위치와 택트(푸시) 스위치를 비교한 설명으로 옳은 것은?",
+      "choices": [
+        "토글형은 결국 한 위치에 정착하므로 문제가 덜하고, 택트형은 마지막이 LOW로 끝나면 오판될 수 있어 대책이 필수다",
+        "토글형은 마지막이 LOW로 끝나 오판되기 쉽고, 택트형은 한 위치에 정착해 문제가 없다",
+        "두 종류 모두 접점이 없어 바운싱이 발생하지 않는다",
+        "토글형만 RC 회로가 필요하고 택트형은 소프트웨어 대책이 불가능하다"
+      ],
+      "answerIndex": 0,
+      "explanation": "교수님 강조(🎤)에 따르면 토글형은 결국 한 위치에 정착하므로 바운싱 문제가 덜하지만, 택트(푸시) 스위치는 진동이 마지막에 LOW에서 끝나면 안 눌린 것으로 오판될 수 있어 디바운싱 대책이 필수다. 나머지는 두 스위치 특성을 뒤바꾸거나 사실과 다르다.",
+      "source": "§4 p.9~10"
+    },
+    {
+      "id": "s4-q06",
+      "section": 4,
+      "topic": "debounce",
+      "type": "mc",
+      "difficulty": 1,
+      "starred": false,
+      "question": "디바운싱의 하드웨어적 대책으로 교수님이 언급한 방법은?",
+      "choices": [
+        "저항 + 커패시터(RC 회로)로 진동을 흡수한다",
+        "PWM 분주비를 조절해 주파수를 낮춘다",
+        "내부 풀업 저항을 20kΩ으로 올린다",
+        "ADC 기준 전압을 5V로 고정한다"
+      ],
+      "answerIndex": 0,
+      "explanation": "교수님 강조(🎤)에 따르면 하드웨어적 디바운싱은 저항 + 커패시터(RC 회로)로 진동을 흡수하는 방식이다. 슬라이드에는 소프트웨어 방법만 있었다. 나머지 보기는 다른 절의 개념으로 디바운싱과 무관하다.",
+      "source": "§4 p.9~10"
+    },
+    {
+      "id": "s4-q07",
+      "section": 4,
+      "topic": "debounce",
+      "type": "ox",
+      "difficulty": 2,
+      "starred": false,
+      "question": "강의 슬라이드에는 디바운싱의 하드웨어 방법과 소프트웨어 방법이 모두 제시되어 있다.",
+      "choices": ["O (맞다)", "X (틀리다)"],
+      "answerIndex": 1,
+      "explanation": "원문에 따르면 슬라이드에는 소프트웨어 방법만 있었고, 하드웨어적(RC 회로) 방법은 교수님이 구두로 추가로 강조한 내용(🎤)이다. 따라서 '모두 제시'는 틀렸다.",
+      "source": "§4 p.9~10"
+    },
+    {
+      "id": "s4-q08",
+      "section": 4,
+      "topic": "debounce",
+      "type": "mc",
+      "difficulty": 2,
+      "starred": false,
+      "question": "소프트웨어 디바운싱 7단계 알고리즘에서, 현재 상태가 이전 상태와 다를 때(상태 변화 감지) 곧바로 수행하는 동작은?",
+      "choices": [
+        "5ms 대기 후 다시 읽어 현재 상태로 저장한다",
+        "즉시 LED를 반전시킨다",
+        "이전 상태를 HIGH로 초기화한다",
+        "16ms 동안 버튼을 계속 눌러 유지하도록 요구한다"
+      ],
+      "answerIndex": 0,
+      "explanation": "7단계 알고리즘에서 3단계는 '이전과 다르면(상태 변화) → 5ms 대기', 4단계는 '5ms 후 다시 읽어 현재 상태로 저장'이다. 즉 상태 변화가 감지되면 곧바로 5ms 시간 차를 두고 재확인한다. LED 반전(5단계)은 그 이후 이전=LOW & 현재=HIGH 조건에서 일어난다.",
+      "source": "§4 p.9~10"
+    },
+    {
+      "id": "s4-q09",
+      "section": 4,
+      "topic": "debounce",
+      "type": "short",
+      "difficulty": 1,
+      "starred": false,
+      "question": "소프트웨어 디바운싱 알고리즘에서 상태 변화를 감지한 뒤 다시 읽기 전까지 대기하는 시간은 몇 ms인가? (숫자+단위)",
+      "answerText": "5ms",
+      "acceptable": ["5ms", "5 ms", "5밀리초", "5 밀리초", "5"],
+      "explanation": "p.10 알고리즘 3단계에서 이전과 현재 상태가 다르면 5ms를 대기하고, 4단계에서 5ms 후 다시 읽어 현재 상태로 저장한다. 최종 암기 카드에도 '디바운싱 대기 = 5ms 후 재확인'으로 정리되어 있다.",
+      "source": "§4 p.9~10"
+    },
+    {
+      "id": "s4-q10",
+      "section": 4,
+      "topic": "debounce",
+      "type": "short",
+      "difficulty": 2,
+      "starred": false,
+      "question": "소프트웨어 디바운싱에서 이전/현재 버튼 상태 변수의 초깃값으로 설정하는 레벨은? (HIGH 또는 LOW)",
+      "answerText": "LOW",
+      "acceptable": ["LOW", "low", "로우", "0"],
+      "explanation": "7단계 알고리즘 1단계에서 '이전/현재 버튼 상태 저장 (초깃값 LOW)'로 명시되어 있다. 또한 5단계에서 '이전=LOW & 현재=HIGH이면 LED 반전'이라는 조건이 LOW 초깃값을 전제로 한다.",
+      "source": "§4 p.9~10"
+    },
+    {
+      "id": "s4-q11",
+      "section": 4,
+      "topic": "debounce",
+      "type": "mc",
+      "difficulty": 3,
+      "starred": false,
+      "question": "소프트웨어 디바운싱 7단계 알고리즘에서 LED를 반전(toggle)시키는 정확한 조건은?",
+      "choices": [
+        "이전 = LOW 이고 현재 = HIGH 일 때",
+        "이전 = HIGH 이고 현재 = LOW 일 때",
+        "이전 = 현재 = HIGH 로 동일할 때",
+        "5ms 대기 후 상태가 바뀌지 않았을 때"
+      ],
+      "answerIndex": 0,
+      "explanation": "5단계에서 '이전=LOW & 현재=HIGH이면 LED 반전'이라고 명시한다. 이는 버튼이 눌리는 상승 에지(LOW→HIGH)를 한 번만 잡아내기 위한 조건이다. 보기 2는 방향이 반대(하강 에지)라 틀렸고, 동일 레벨이거나 변화 없음은 반전 조건이 아니다.",
+      "source": "§4 p.9~10"
+    },
+    {
+      "id": "s4-q12",
+      "section": 4,
+      "topic": "debounce",
+      "type": "mc",
+      "difficulty": 3,
+      "starred": false,
+      "question": "소프트웨어 디바운싱의 핵심 개념과 안정화 시간에 대한 교수님 설명으로 옳은 것은?",
+      "choices": [
+        "한 번 읽고 상태가 변했으면 시간 차를 두고 다시 읽으며, 바운싱은 수 ms~16ms 정도면 안정된다",
+        "한 번 읽은 값을 그대로 신뢰하고, 바운싱은 보통 1초 이상 지속된다",
+        "상태가 변하지 않아도 항상 5ms마다 LED를 반전시킨다",
+        "바운싱은 약 490ms 동안 지속되므로 그만큼 대기해야 한다"
+      ],
+      "answerIndex": 0,
+      "explanation": "교수님 핵심 개념(🎤)은 '한 번 읽고, 상태가 변했으면 시간 차를 두고 다시 읽는다'이며, 바운싱은 수 ms~16ms 정도면 안정되므로 그 후 재확인한다. 1초·490ms 같은 값은 사실과 다르고(490Hz는 §2 PWM 주파수), 상태 변화 없이 반전하는 동작도 알고리즘과 어긋난다.",
+      "source": "§4 p.9~10"
+    },
+    {
+      "id": "s4-q13",
+      "section": 4,
+      "topic": "debounce",
+      "type": "short",
+      "difficulty": 2,
+      "starred": false,
+      "question": "교수님이 \"가장 바람직하다\"고 강조한 디바운싱 전략은 무엇과 무엇을 동시에 세우는 것인가? (두 가지)",
+      "answerText": "하드웨어 대책과 소프트웨어 대책을 동시에 세운다",
+      "acceptable": ["하드웨어와 소프트웨어", "하드웨어 + 소프트웨어", "하드웨어/소프트웨어", "HW와 SW", "하드웨어적 + 소프트웨어적 대책"],
+      "explanation": "교수님 강조(🎤)에 따르면 하드웨어(RC 회로) 대책과 소프트웨어(7단계 알고리즘) 대책을 동시에 세우는 것이 가장 바람직하다.",
+      "source": "§4 p.9~10"
+    }
+  ]
+}

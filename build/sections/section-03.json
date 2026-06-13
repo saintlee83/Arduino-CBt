@@ -1,0 +1,290 @@
+{
+  "section": 3,
+  "title": "디지털 입력 — 풀다운/풀업 저항",
+  "pages": "p.7~8",
+  "topic": "digin",
+  "notesBlocks": [
+    {
+      "type": "subheading",
+      "text": "왜 필요한가"
+    },
+    {
+      "type": "para",
+      "text": "저항 없이 버튼만 연결하면, 버튼을 안 눌렀을 때 핀이 개방(open) = 플로팅(floating) 상태가 된다. 이때는 잡음·주변 환경에 따라 핀이 HIGH인지 LOW인지 불명확해진다."
+    },
+    {
+      "type": "subheading",
+      "text": "풀다운 vs 풀업 🎤"
+    },
+    {
+      "type": "callout",
+      "variant": "mic",
+      "text": "🎤 풀다운/풀업은 저항 연결 방향과 평상시 입력 레벨로 구분한다. (교수님 구두 강조 구간)"
+    },
+    {
+      "type": "table",
+      "headers": ["구분", "풀다운(pull-down)", "풀업(pull-up)"],
+      "rows": [
+        ["저항 연결 방향", "GND 쪽", "+5V(VCC) 쪽"],
+        ["평상시 입력 레벨", "LOW", "HIGH"],
+        ["스위치 누르면", "LOW → HIGH (5V로 연결)", "HIGH → LOW (GND로 연결)"]
+      ]
+    },
+    {
+      "type": "callout",
+      "variant": "info",
+      "text": "강의 슬라이드 p.7 — 10kΩ 풀다운 저항 회로와 플로팅 상태"
+    },
+    {
+      "type": "subheading",
+      "text": "저항값 (p.7 + 🎤)"
+    },
+    {
+      "type": "list",
+      "ordered": false,
+      "items": [
+        {"text": "외부 풀다운/풀업 저항: 보통 10kΩ — 🎤 SMD 표기 \"103\" = 10×10³ = 10kΩ", "badge": "mic"},
+        {"text": "약한(weak) 풀다운: 10kΩ보다 크면 전류가 너무 적어 GND 레벨 확인이 안 될 수 있음", "badge": null},
+        {"text": "강한(strong) 풀다운: 10kΩ보다 작으면 버튼을 눌러도 전류 대부분이 GND로 흘러 GND로 읽힐 수 있음", "badge": null},
+        {"text": "🎤 아두이노 내부 풀업 ≒ 20kΩ (소프트웨어 INPUT_PULLUP 으로 활성화 가능, 슬라이드에 없음)", "badge": "mic"}
+      ]
+    },
+    {
+      "type": "subheading",
+      "text": "🎤 교수님 실전 권장 (강조)"
+    },
+    {
+      "type": "list",
+      "ordered": false,
+      "items": [
+        {"text": "책에는 풀다운 예제가 나오지만, 실무에서는 내부 풀업을 기본으로 쓰고, 입력이 LOW로 떨어지는 것(falling)을 감지하는 방식이 오류를 줄인다", "badge": "mic"},
+        {"text": "⚠️ 주의: 외부에 풀다운을 달아놓고 프로그램에서 실수로 내부 풀업을 켜면 레벨이 어긋나 오동작한다 → 한 방식으로 통일할 것", "badge": "warn"},
+        {"text": "실습 보드 예: 2번 핀이 103(10kΩ)으로 풀업되어 평상시 HIGH 유지 → 센서/스위치가 LOW로 떨어뜨리면 인식", "badge": "mic"}
+      ]
+    }
+  ],
+  "questions": [
+    {
+      "id": "s3-q01",
+      "section": 3,
+      "topic": "digin",
+      "type": "mc",
+      "difficulty": 1,
+      "starred": false,
+      "question": "저항 없이 버튼만 디지털 입력 핀에 연결했을 때, 버튼을 누르지 않은 상태에서 핀이 놓이는 상태를 무엇이라고 하는가?",
+      "choices": ["플로팅(floating) 상태", "풀업(pull-up) 상태", "쇼트(short) 상태", "고임피던스 출력 상태"],
+      "answerIndex": 0,
+      "explanation": "버튼을 안 누르면 핀이 어느 쪽 전원에도 연결되지 않은 개방(open) 상태가 되며, 이를 플로팅(floating)이라고 한다. 이 상태에서는 잡음·주변 환경에 따라 HIGH/LOW가 불명확해져 풀다운/풀업 저항이 필요하다.",
+      "source": "§3 p.7~8"
+    },
+    {
+      "id": "s3-q02",
+      "section": 3,
+      "topic": "digin",
+      "type": "mc",
+      "difficulty": 2,
+      "starred": false,
+      "question": "핀이 플로팅(floating) 상태일 때 발생하는 문제로 가장 적절한 것은?",
+      "choices": [
+        "잡음·주변 환경에 따라 입력이 HIGH인지 LOW인지 불명확해진다",
+        "핀이 항상 안정적으로 LOW로 고정된다",
+        "핀이 항상 안정적으로 HIGH로 고정된다",
+        "핀의 출력 전압이 5V로 고정되어 버튼이 동작하지 않는다"
+      ],
+      "answerIndex": 0,
+      "explanation": "플로팅 상태는 핀이 어느 전원에도 연결되지 않아 잡음·주변 환경에 따라 HIGH인지 LOW인지 불명확해지는 것이 문제다. 따라서 풀다운/풀업 저항으로 평상시 레벨을 확정해 줘야 한다.",
+      "source": "§3 p.7~8"
+    },
+    {
+      "id": "s3-q03",
+      "section": 3,
+      "topic": "digin",
+      "type": "mc",
+      "difficulty": 2,
+      "starred": false,
+      "question": "풀다운(pull-down) 저항 회로에서 저항은 어느 쪽에 연결되며, 버튼을 누르지 않은 평상시 입력 레벨은 무엇인가?",
+      "choices": [
+        "GND 쪽 연결, 평상시 LOW",
+        "+5V(VCC) 쪽 연결, 평상시 HIGH",
+        "GND 쪽 연결, 평상시 HIGH",
+        "+5V(VCC) 쪽 연결, 평상시 LOW"
+      ],
+      "answerIndex": 0,
+      "explanation": "풀다운 저항은 GND 쪽에 연결되어 평상시 핀을 LOW로 끌어내린다. 버튼을 누르면 5V로 연결되어 LOW → HIGH로 바뀐다.",
+      "source": "§3 p.7~8"
+    },
+    {
+      "id": "s3-q04",
+      "section": 3,
+      "topic": "digin",
+      "type": "mc",
+      "difficulty": 2,
+      "starred": false,
+      "question": "풀업(pull-up) 저항 회로에서 저항 연결 방향과 평상시 입력 레벨, 그리고 버튼을 눌렀을 때의 변화로 옳은 것은?",
+      "choices": [
+        "+5V(VCC) 쪽 연결, 평상시 HIGH, 누르면 HIGH → LOW",
+        "GND 쪽 연결, 평상시 LOW, 누르면 LOW → HIGH",
+        "+5V(VCC) 쪽 연결, 평상시 LOW, 누르면 LOW → HIGH",
+        "GND 쪽 연결, 평상시 HIGH, 누르면 HIGH → LOW"
+      ],
+      "answerIndex": 0,
+      "explanation": "풀업 저항은 +5V(VCC) 쪽에 연결되어 평상시 핀을 HIGH로 유지한다. 버튼을 누르면 핀이 GND로 연결되어 HIGH → LOW로 떨어진다.",
+      "source": "§3 p.7~8"
+    },
+    {
+      "id": "s3-q05",
+      "section": 3,
+      "topic": "digin",
+      "type": "ox",
+      "difficulty": 1,
+      "starred": false,
+      "question": "풀다운 저항 회로에서 버튼을 누르면 입력 레벨이 LOW에서 HIGH로 바뀐다.",
+      "choices": ["O (맞다)", "X (틀리다)"],
+      "answerIndex": 0,
+      "explanation": "풀다운은 평상시 LOW이고 버튼을 누르면 5V로 연결되어 LOW → HIGH가 된다. 따라서 맞는 설명이다. (풀업은 반대로 평상시 HIGH, 누르면 HIGH → LOW)",
+      "source": "§3 p.7~8"
+    },
+    {
+      "id": "s3-q06",
+      "section": 3,
+      "topic": "digin",
+      "type": "mc",
+      "difficulty": 2,
+      "starred": false,
+      "question": "외부 풀다운/풀업 저항으로 보통 사용하는 값과, 그 저항의 SMD 표기 \"103\"이 의미하는 값으로 옳은 것은?",
+      "choices": [
+        "10kΩ, \"103\" = 10×10³ = 10kΩ",
+        "1kΩ, \"103\" = 1×10³ = 1kΩ",
+        "100kΩ, \"103\" = 10×10⁴ = 100kΩ",
+        "20kΩ, \"103\" = 2×10⁴ = 20kΩ"
+      ],
+      "answerIndex": 0,
+      "explanation": "외부 풀다운/풀업 저항은 보통 10kΩ을 쓰며, SMD 칩 저항 표기 \"103\"은 10 뒤에 0이 3개 = 10×10³ = 10,000Ω = 10kΩ을 뜻한다.",
+      "source": "§3 p.7~8"
+    },
+    {
+      "id": "s3-q07",
+      "section": 3,
+      "topic": "digin",
+      "type": "mc",
+      "difficulty": 3,
+      "starred": false,
+      "question": "풀다운 저항을 10kΩ보다 훨씬 작은 값(예: 100Ω)으로 쓰는 '강한(strong) 풀다운'일 때 생길 수 있는 문제는?",
+      "choices": [
+        "버튼을 눌러도 전류 대부분이 GND로 흘러 핀이 계속 GND(LOW)로 읽힐 수 있다",
+        "전류가 너무 적어 GND 레벨 확인이 안 될 수 있다",
+        "버튼을 안 눌러도 핀이 항상 HIGH로 읽힌다",
+        "핀이 플로팅 상태가 되어 레벨이 불명확해진다"
+      ],
+      "answerIndex": 0,
+      "explanation": "저항이 10kΩ보다 작은 강한 풀다운은 버튼을 눌러 5V로 연결해도 전류 대부분이 작은 저항을 통해 GND로 흘러버려 핀이 여전히 GND(LOW)로 읽힐 수 있다. '전류가 너무 적다'는 반대로 약한(큰 저항) 풀다운의 문제다.",
+      "source": "§3 p.7~8"
+    },
+    {
+      "id": "s3-q08",
+      "section": 3,
+      "topic": "digin",
+      "type": "mc",
+      "difficulty": 3,
+      "starred": false,
+      "question": "풀다운 저항을 10kΩ보다 훨씬 큰 값으로 쓰는 '약한(weak) 풀다운'의 문제로 옳은 것은?",
+      "choices": [
+        "전류가 너무 적어 GND 레벨 확인이 안 될 수 있다",
+        "전류 대부분이 GND로 흘러 버튼을 눌러도 GND로 읽힌다",
+        "핀이 항상 HIGH로 고정되어 버튼이 동작하지 않는다",
+        "내부 풀업이 자동으로 켜져 레벨이 어긋난다"
+      ],
+      "answerIndex": 0,
+      "explanation": "저항이 10kΩ보다 크면(약한 풀다운) 전류가 너무 적게 흘러 평상시 GND(LOW) 레벨을 확실히 확인하지 못할 수 있다. '전류 대부분이 GND로 흘러 눌러도 GND로 읽힌다'는 반대로 강한 풀다운의 문제다.",
+      "source": "§3 p.7~8"
+    },
+    {
+      "id": "s3-q09",
+      "section": 3,
+      "topic": "digin",
+      "type": "short",
+      "difficulty": 2,
+      "starred": false,
+      "question": "아두이노 내부 풀업 저항의 대략적인 저항값은 얼마인가? (🎤 강조)",
+      "answerText": "약 20kΩ",
+      "acceptable": ["20kΩ", "20k", "20킬로옴", "약 20kΩ", "≒20kΩ", "20 kΩ"],
+      "explanation": "아두이노 내부 풀업 저항은 대략 20kΩ이며, 소프트웨어에서 INPUT_PULLUP으로 활성화할 수 있다. (외부 풀업/풀다운 10kΩ과 구분해서 암기. 슬라이드에 없는 🎤 구두 강조 내용)",
+      "source": "§3 p.7~8"
+    },
+    {
+      "id": "s3-q10",
+      "section": 3,
+      "topic": "digin",
+      "type": "short",
+      "difficulty": 2,
+      "starred": false,
+      "question": "아두이노에서 내부 풀업 저항을 켜기 위해 pinMode에 사용하는 모드(상수) 이름은 무엇인가?",
+      "answerText": "INPUT_PULLUP",
+      "acceptable": ["INPUT_PULLUP", "input_pullup", "INPUT PULLUP"],
+      "explanation": "내부 풀업(≒20kΩ)은 소프트웨어에서 INPUT_PULLUP 모드로 활성화한다. 외부 저항 없이 핀을 평상시 HIGH로 유지할 수 있다.",
+      "source": "§3 p.7~8"
+    },
+    {
+      "id": "s3-q11",
+      "section": 3,
+      "topic": "digin",
+      "type": "ox",
+      "difficulty": 2,
+      "starred": false,
+      "question": "외부에 풀다운 저항을 달아놓은 상태에서 프로그램으로 내부 풀업을 켜도, 두 저항이 서로 도와 입력 레벨이 더 안정적으로 동작한다.",
+      "choices": ["O (맞다)", "X (틀리다)"],
+      "answerIndex": 1,
+      "explanation": "틀리다. 외부 풀다운(GND 쪽)과 내부 풀업(VCC 쪽)을 동시에 쓰면 평상시 레벨이 서로 어긋나 오동작한다. 풀다운이든 풀업이든 한 방식으로 통일해야 한다는 것이 교수님의 ⚠️ 주의 사항이다.",
+      "source": "§3 p.7~8"
+    },
+    {
+      "id": "s3-q12",
+      "section": 3,
+      "topic": "digin",
+      "type": "mc",
+      "difficulty": 3,
+      "starred": false,
+      "question": "교수님이 실무에서 권장한 디지털 입력 방식으로 가장 적절한 것은?",
+      "choices": [
+        "내부 풀업을 기본으로 쓰고, 입력이 LOW로 떨어지는 것(falling)을 감지하는 방식",
+        "외부 풀다운을 기본으로 쓰고, 입력이 HIGH로 올라가는 것을 감지하는 방식",
+        "풀업과 풀다운을 항상 동시에 연결해 레벨을 이중으로 확정하는 방식",
+        "저항을 아예 달지 않고 플로팅 상태에서 잡음을 평균 내 감지하는 방식"
+      ],
+      "answerIndex": 0,
+      "explanation": "교수님은 책의 풀다운 예제와 달리 실무에서는 내부 풀업을 기본으로 쓰고 입력이 LOW로 떨어지는 것(falling)을 감지하는 방식이 오류를 줄인다고 강조했다. 풀업/풀다운을 동시에 쓰면 레벨이 어긋나 오동작하므로 한 방식으로 통일해야 한다.",
+      "source": "§3 p.7~8"
+    },
+    {
+      "id": "s3-q13",
+      "section": 3,
+      "topic": "digin",
+      "type": "mc",
+      "difficulty": 2,
+      "starred": false,
+      "question": "실습 보드에서 2번 핀이 \"103\" 저항으로 풀업되어 있다. 평상시 핀의 레벨과 센서/스위치가 활성화될 때의 동작으로 옳은 것은?",
+      "choices": [
+        "평상시 HIGH 유지, 센서/스위치가 핀을 LOW로 떨어뜨리면 인식",
+        "평상시 LOW 유지, 센서/스위치가 핀을 HIGH로 올리면 인식",
+        "평상시 플로팅, 센서/스위치가 5V로 연결하면 인식",
+        "평상시 HIGH 유지, 센서/스위치가 핀을 HIGH로 더 올리면 인식"
+      ],
+      "answerIndex": 0,
+      "explanation": "\"103\"은 10kΩ 풀업 저항으로, 평상시 2번 핀을 HIGH로 유지한다. 센서/스위치가 핀을 GND로 끌어내려 LOW로 떨어뜨릴 때 입력으로 인식한다. 이것이 교수님이 권장한 풀업 + falling(LOW로 떨어짐) 감지 방식이다.",
+      "source": "§3 p.7~8"
+    },
+    {
+      "id": "s3-q14",
+      "section": 3,
+      "topic": "digin",
+      "type": "short",
+      "difficulty": 1,
+      "starred": false,
+      "question": "풀다운 저항은 GND 쪽에, 풀업 저항은 어느 쪽(전원)에 연결하는가?",
+      "answerText": "+5V(VCC) 쪽",
+      "acceptable": ["+5V", "5V", "VCC", "+5V(VCC)", "VCC 쪽", "5V 쪽", "+5V 쪽"],
+      "explanation": "풀다운은 저항을 GND 쪽에 연결해 평상시 LOW로, 풀업은 저항을 +5V(VCC) 쪽에 연결해 평상시 HIGH로 핀을 유지한다.",
+      "source": "§3 p.7~8"
+    }
+  ]
+}

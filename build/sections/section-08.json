@@ -1,0 +1,158 @@
+{
+  "section": 8,
+  "title": "시리얼 모니터/플로터",
+  "pages": "p.17",
+  "topic": "serial",
+  "notesBlocks": [
+    {
+      "type": "subheading",
+      "text": "시리얼 모니터 vs 시리얼 플로터"
+    },
+    {
+      "type": "list",
+      "ordered": false,
+      "items": [
+        {"text": "시리얼 모니터: 숫자가 텍스트로 줄줄이 출력", "badge": null},
+        {"text": "시리얼 플로터: 같은 숫자를 실시간 선 그래프로 표시 (툴 메뉴, 단축키 Ctrl+Shift+L)", "badge": null}
+      ]
+    },
+    {
+      "type": "table",
+      "headers": ["구분", "출력 형태", "여는 방법"],
+      "rows": [
+        ["시리얼 모니터", "숫자가 텍스트로 줄줄이 출력", "—"],
+        ["시리얼 플로터", "같은 숫자를 실시간 선 그래프로 표시", "툴(Tools) 메뉴 / 단축키 Ctrl+Shift+L"]
+      ]
+    },
+    {
+      "type": "subheading",
+      "text": "시리얼 플로터의 장점 3가지"
+    },
+    {
+      "type": "list",
+      "ordered": true,
+      "items": [
+        {"text": "변화 추이가 한눈에 보임", "badge": null},
+        {"text": "그래프 떨림으로 노이즈 확인", "badge": null},
+        {"text": "Serial.print(val1); Serial.print(\" \"); Serial.println(val2); 처럼 공백으로 구분하면 여러 선을 색깔별로 표시", "badge": null}
+      ]
+    },
+    {
+      "type": "code",
+      "code": "Serial.print(val1);\nSerial.print(\" \");\nSerial.println(val2);"
+    },
+    {
+      "type": "callout",
+      "variant": "info",
+      "text": "여러 변수를 공백(\" \")으로 구분해서 출력하면 시리얼 플로터가 각 변수를 색깔이 다른 별개의 선으로 그려준다."
+    },
+    {
+      "type": "subheading",
+      "text": "팁 — delay 값"
+    },
+    {
+      "type": "para",
+      "text": "delay(500)이면 그래프가 뚝뚝 끊김 → delay(10) 정도로 줄이면 부드럽게 표시된다."
+    },
+    {
+      "type": "table",
+      "headers": ["delay 값", "그래프 모습"],
+      "rows": [
+        ["delay(500)", "뚝뚝 끊김"],
+        ["delay(10) 정도", "부드럽게 연속 표시"]
+      ]
+    }
+  ],
+  "questions": [
+    {
+      "id": "s8-q01",
+      "section": 8,
+      "topic": "serial",
+      "type": "mc",
+      "difficulty": 1,
+      "starred": false,
+      "question": "시리얼 플로터를 여는 단축키는 무엇인가?",
+      "choices": ["Ctrl+Shift+L", "Ctrl+Shift+M", "Ctrl+Shift+P", "Ctrl+Alt+L", "Ctrl+Shift+S"],
+      "answerIndex": 0,
+      "explanation": "시리얼 플로터는 툴(Tools) 메뉴에서 열 수 있으며 단축키는 Ctrl+Shift+L이다(원문 p.17). Ctrl+Shift+M은 시리얼 모니터 단축키로, 혼동을 노린 오답이다.",
+      "source": "§8 p.17"
+    },
+    {
+      "id": "s8-q02",
+      "section": 8,
+      "topic": "serial",
+      "type": "mc",
+      "difficulty": 1,
+      "starred": false,
+      "question": "시리얼 모니터와 시리얼 플로터의 출력 형태를 바르게 짝지은 것은?",
+      "choices": [
+        "모니터: 숫자를 텍스트로 줄줄이 출력 / 플로터: 같은 숫자를 실시간 선 그래프로 표시",
+        "모니터: 실시간 선 그래프 / 플로터: 숫자를 텍스트로 출력",
+        "모니터: 숫자를 막대 그래프로 표시 / 플로터: 텍스트 출력",
+        "모니터와 플로터 모두 선 그래프로 표시",
+        "모니터: 이미지 출력 / 플로터: 텍스트 출력"
+      ],
+      "answerIndex": 0,
+      "explanation": "원문 p.17: 시리얼 모니터는 숫자가 텍스트로 줄줄이 출력되고, 시리얼 플로터는 같은 숫자를 실시간 선 그래프로 표시한다. 둘의 역할을 뒤바꾼 선택지(②)가 흔한 오답이다.",
+      "source": "§8 p.17"
+    },
+    {
+      "id": "s8-q03",
+      "section": 8,
+      "topic": "serial",
+      "type": "ox",
+      "difficulty": 2,
+      "starred": false,
+      "question": "시리얼 플로터는 그래프가 떨리는 정도(떨림)를 보고 신호의 노이즈를 확인하는 용도로 쓸 수 있다.",
+      "choices": ["O (맞다)", "X (틀리다)"],
+      "answerIndex": 0,
+      "explanation": "맞다. 원문 p.17이 꼽는 시리얼 플로터의 장점 3가지는 ① 변화 추이가 한눈에 보임 ② 그래프 떨림으로 노이즈 확인 ③ 공백으로 구분해 여러 선을 색깔별로 표시이다. 따라서 떨림으로 노이즈를 확인하는 용도가 맞다.",
+      "source": "§8 p.17"
+    },
+    {
+      "id": "s8-q04",
+      "section": 8,
+      "topic": "serial",
+      "type": "mc",
+      "difficulty": 2,
+      "starred": false,
+      "question": "시리얼 플로터에서 두 개의 값(val1, val2)을 서로 다른 색의 선 두 개로 표시하려면 어떻게 출력해야 하는가?",
+      "choices": [
+        "두 값 사이를 공백(\" \")으로 구분해서 출력한다 (예: Serial.print(val1); Serial.print(\" \"); Serial.println(val2);)",
+        "두 값 사이를 콤마(\",\")로만 구분해서 출력한다",
+        "두 값을 각각 다른 줄에 println으로 따로 출력한다",
+        "두 값을 곱해서 하나의 숫자로 출력한다",
+        "시리얼 플로터는 한 번에 한 개의 선만 그릴 수 있어 불가능하다"
+      ],
+      "answerIndex": 0,
+      "explanation": "원문 p.17: Serial.print(val1); Serial.print(\" \"); Serial.println(val2); 처럼 값들을 공백으로 구분해서 출력하면 시리얼 플로터가 여러 선을 색깔별로 표시한다. 곱해서 하나로 만들거나 한 개만 그릴 수 있다는 설명은 틀리다.",
+      "source": "§8 p.17"
+    },
+    {
+      "id": "s8-q05",
+      "section": 8,
+      "topic": "serial",
+      "type": "ox",
+      "difficulty": 2,
+      "starred": false,
+      "question": "loop에서 delay(500)을 사용하면 시리얼 플로터의 그래프가 부드럽게 이어져 표시된다.",
+      "choices": ["O (맞다)", "X (틀리다)"],
+      "answerIndex": 1,
+      "explanation": "틀리다. 원문 p.17 팁: delay(500)이면 그래프가 뚝뚝 끊긴다. 부드럽게 표시하려면 delay(10) 정도로 줄여야 한다.",
+      "source": "§8 p.17"
+    },
+    {
+      "id": "s8-q06",
+      "section": 8,
+      "topic": "serial",
+      "type": "short",
+      "difficulty": 2,
+      "starred": false,
+      "question": "시리얼 플로터의 그래프가 뚝뚝 끊겨 보일 때, delay 값을 대략 어느 정도로 줄이라고 권장하는가? (숫자 포함 함수 호출 형태로)",
+      "answerText": "delay(10) 정도",
+      "acceptable": ["delay(10)", "10ms", "약 10ms", "10 정도", "delay 10", "delay(10) 정도로", "10"],
+      "explanation": "원문 p.17: delay(500)이면 그래프가 뚝뚝 끊기므로 delay(10) 정도로 줄이면 부드럽게 표시된다. 핵심 수치는 10ms이다.",
+      "source": "§8 p.17"
+    }
+  ]
+}
