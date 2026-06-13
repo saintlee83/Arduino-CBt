@@ -2,3 +2,6 @@
 .vercel
 *.log
 node_modules/
+
+*.pdf
+_kr_*.ttf
